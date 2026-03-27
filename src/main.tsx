@@ -7,58 +7,65 @@ const script = document.createElement('script')
 script.src = '/legacy/index.js'
 script.defer = true
 
-function injectHeroLogo() {
-  if (document.getElementById('hero-logo-badge')) return
+function patchHeaderBrand() {
+  const heading = Array.from(document.querySelectorAll('h1')).find((el) =>
+    (el.textContent || '').includes('Vọng Âm Quá Khứ')
+  ) as HTMLElement | undefined
 
-  const hero = document.querySelector('section.relative.min-h-screen') as HTMLElement | null
-  if (!hero) return
+  if (!heading) return false
 
-  const badge = document.createElement('div')
-  badge.id = 'hero-logo-badge'
-  badge.style.position = 'absolute'
-  badge.style.top = '24px'
-  badge.style.left = '24px'
-  badge.style.zIndex = '30'
-  badge.style.display = 'flex'
-  badge.style.alignItems = 'center'
-  badge.style.gap = '8px'
-  badge.style.padding = '6px 10px'
-  badge.style.borderRadius = '9999px'
-  badge.style.background = 'rgba(255,255,255,0.12)'
-  badge.style.backdropFilter = 'blur(4px)'
-  badge.style.border = '1px solid rgba(255,255,255,0.25)'
+  const textBlock = heading.parentElement as HTMLElement | null
+  const brandWrap = textBlock?.parentElement as HTMLElement | null
+  if (!textBlock || !brandWrap) return false
 
-  const img = document.createElement('img')
-  img.src = '/logo-3-cong-chua.jpg'
-  img.alt = 'Logo 3 công chúa'
-  img.style.width = '36px'
-  img.style.height = '36px'
-  img.style.objectFit = 'cover'
-  img.style.borderRadius = '9999px'
+  // Remove old yellow circle "VÂ" icon.
+  const maybeOldBadge = brandWrap.firstElementChild as HTMLElement | null
+  if (maybeOldBadge && (maybeOldBadge.textContent || '').includes('VÂ')) {
+    maybeOldBadge.remove()
+  }
 
-  const label = document.createElement('span')
-  label.textContent = '3 công chúa'
-  label.style.color = '#fff'
-  label.style.fontSize = '12px'
-  label.style.fontWeight = '600'
-  label.style.textTransform = 'lowercase'
+  // Update title to the exact small label requested.
+  heading.textContent = '3 công chúa'
+  heading.style.fontSize = '14px'
+  heading.style.lineHeight = '1.1'
+  heading.style.letterSpacing = '0.01em'
 
-  badge.appendChild(img)
-  badge.appendChild(label)
-  hero.appendChild(badge)
+  const subtitle = textBlock.querySelector('p') as HTMLElement | null
+  if (subtitle) subtitle.remove()
+
+  let logo = brandWrap.querySelector('#menu-logo-3-cong-chua') as HTMLImageElement | null
+  if (!logo) {
+    logo = document.createElement('img')
+    logo.id = 'menu-logo-3-cong-chua'
+    logo.src = '/logo-3-cong-chua.jpg'
+    logo.alt = 'Logo 3 công chúa'
+    logo.style.width = '40px'
+    logo.style.height = '40px'
+    logo.style.objectFit = 'cover'
+    logo.style.borderRadius = '9999px'
+    logo.style.border = '2px solid rgba(245,158,11,0.7)'
+    logo.style.boxShadow = '0 6px 16px rgba(0,0,0,0.25)'
+    brandWrap.insertBefore(logo, brandWrap.firstChild)
+  }
+
+  // Ensure old hero-floating badge is removed if present from prior versions.
+  const oldHeroBadge = document.getElementById('hero-logo-badge')
+  if (oldHeroBadge) oldHeroBadge.remove()
+
+  return true
 }
 
 const mount = () => {
   document.body.appendChild(script)
-  const tryInject = () => injectHeroLogo()
-  // Legacy bundle renders asynchronously; observe until hero appears.
+
+  const tryPatch = () => patchHeaderBrand()
   const observer = new MutationObserver(() => {
-    tryInject()
-    if (document.getElementById('hero-logo-badge')) observer.disconnect()
+    if (tryPatch()) observer.disconnect()
   })
+
   observer.observe(document.body, { childList: true, subtree: true })
-  setTimeout(tryInject, 300)
-  setTimeout(tryInject, 1200)
+  setTimeout(tryPatch, 300)
+  setTimeout(tryPatch, 1200)
 }
 
 if (document.readyState === 'loading') {
