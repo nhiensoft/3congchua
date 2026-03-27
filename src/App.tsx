@@ -20,6 +20,7 @@ const NAV_ITEMS = [
   { label: 'Thanh Hóa', href: '#thanh-hoa' },
   { label: 'Quảng Ninh', href: '#quang-ninh' },
   { label: 'Hưng Yên', href: '#hung-yen' },
+  { label: 'Giao Lộ Định Mệnh', href: '#giao-lo-dinh-menh' },
   { label: 'Đại Học Mở', href: '#dai-hoc-mo' },
   { label: 'Liên Hệ', href: '#lien-he' },
 ]
@@ -660,8 +661,41 @@ function HungYenSection() {
   )
 }
 
+function GiaoLoDinhMenhSection() {
+  return (
+    <section id="giao-lo-dinh-menh" className="relative overflow-hidden py-16 md:py-24">
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,#b91c1c_0%,#b91c1c_30%,#14532d_45%,#14532d_65%,#eab308_80%,#facc15_100%)] opacity-90" />
+      <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-red-400/40 blur-3xl animate-pulse" />
+      <div className="absolute -right-24 top-16 h-80 w-80 rounded-full bg-emerald-400/35 blur-3xl animate-pulse" />
+      <div className="absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-yellow-300/35 blur-3xl animate-pulse" />
+
+      <div className="relative mx-auto max-w-5xl px-4 text-center text-white md:px-6">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/90">Hành trình hội tụ</p>
+        <h2 className="mt-3 text-3xl font-extrabold leading-tight drop-shadow md:text-5xl">GIAO LỘ ĐỊNH MỆNH</h2>
+
+        <p className="mx-auto mt-4 max-w-3xl text-sm font-semibold uppercase tracking-wide text-white/90 md:text-base">
+          KHI NHỮNG DÒNG CHẢY HỘI TỤ VỀ ĐẠI DƯƠNG TRI THỨC
+        </p>
+
+        <p className="mx-auto mt-5 max-w-4xl rounded-xl bg-black/20 p-4 text-left text-sm leading-relaxed text-white/95 md:text-base">
+          {'>'} Mang theo sự kiên cường của đất học Thanh Hóa, sức sống khoáng đạt của biển bạc Quảng Ninh, hay nét tinh tế từ phù sa Hưng Yên; định mệnh đã đưa ba tâm hồn đồng điệu gặp gỡ. Chúng mình không chỉ mang theo niềm tự hào quê hương, mà còn mang cả khát khao chinh phục những tầm cao mới, đem tri thức về xây dựng quê hương.
+        </p>
+
+        <div className="mx-auto mt-8 w-full max-w-sm rounded-2xl border border-white/40 bg-white/15 p-4 backdrop-blur">
+          <img
+            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=900&auto=format&fit=crop"
+            alt="Ảnh tạm logo Đại học Mở"
+            className="h-40 w-full rounded-lg object-cover shadow-lg md:h-48"
+          />
+          <p className="mt-3 text-xs text-white/90">Logo Đại học Mở (ảnh tạm – sẽ thay ảnh chính thức theo file bạn gửi sau)</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function DaiHocMoSection() {
-  const coreValues = ['Mở tri thức', 'Mở tư duy', 'Mở kỹ năng', 'Mở cơ hội', 'Mở kết nối']
+  const coreValues = ['Mở cơ hội', 'Mở trái tim', 'Mở trí tuệ', 'Mở tầm nhìn', 'Mở tương lai']
 
   return (
     <section id="dai-hoc-mo" className="bg-slate-900 py-14 text-white md:py-20">
@@ -734,6 +768,7 @@ function Footer() {
               ['Thanh Hóa', '#thanh-hoa'],
               ['Quảng Ninh', '#quang-ninh'],
               ['Hưng Yên', '#hung-yen'],
+              ['Giao lộ định mệnh', '#giao-lo-dinh-menh'],
               ['Đại học Mở', '#dai-hoc-mo'],
             ].map(([label, href]) => (
               <li key={href}>
@@ -789,6 +824,7 @@ export default function App() {
       <ThanhHoaSection />
       <QuangNinhSection />
       <HungYenSection />
+      <GiaoLoDinhMenhSection />
       <DaiHocMoSection />
       <Footer />
     </div>
