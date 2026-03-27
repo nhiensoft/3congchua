@@ -18,13 +18,11 @@ function patchHeaderBrand() {
   const brandWrap = textBlock?.parentElement as HTMLElement | null
   if (!textBlock || !brandWrap) return false
 
-  // Remove old yellow circle "VÂ" icon.
   const maybeOldBadge = brandWrap.firstElementChild as HTMLElement | null
   if (maybeOldBadge && (maybeOldBadge.textContent || '').includes('VÂ')) {
     maybeOldBadge.remove()
   }
 
-  // Update title to the exact small label requested.
   heading.textContent = '3 công chúa'
   heading.style.fontSize = '14px'
   heading.style.lineHeight = '1.1'
@@ -48,9 +46,44 @@ function patchHeaderBrand() {
     brandWrap.insertBefore(logo, brandWrap.firstChild)
   }
 
-  // Ensure old hero-floating badge is removed if present from prior versions.
+  return true
+}
+
+function patchHeroContent() {
+  const heroSection = document.querySelector('section.relative.min-h-screen') as HTMLElement | null
+  if (!heroSection) return false
+
+  const heroTitle = heroSection.querySelector('h1') as HTMLElement | null
+  if (!heroTitle) return false
+
+  // Remove any old injected floating badge in hero.
   const oldHeroBadge = document.getElementById('hero-logo-badge')
   if (oldHeroBadge) oldHeroBadge.remove()
+
+  // Push hero content down so it does not overlap with the fixed top menu area.
+  const textContainer = heroTitle.parentElement as HTMLElement | null
+  if (textContainer) {
+    textContainer.style.marginTop = '56px'
+  }
+
+  heroTitle.innerHTML = ''
+  const mainLine = document.createElement('span')
+  mainLine.textContent = 'Vọng Âm Quá Khứ'
+  mainLine.style.display = 'block'
+
+  const subLine = document.createElement('span')
+  subLine.textContent = 'Hành Trình Di Sản Của 3 Công Chúa'
+  subLine.style.display = 'block'
+  subLine.style.fontSize = '0.65em'
+  subLine.style.marginTop = '8px'
+
+  heroTitle.appendChild(mainLine)
+  heroTitle.appendChild(subLine)
+
+  const introP = heroTitle.parentElement?.querySelector('p') as HTMLElement | null
+  if (introP) {
+    introP.textContent = 'Nơi Dấu Ấn 3 Miền Thăng Hoa, Tri Thức 3 Miền Thăng Hoa'
+  }
 
   return true
 }
@@ -58,14 +91,20 @@ function patchHeaderBrand() {
 const mount = () => {
   document.body.appendChild(script)
 
-  const tryPatch = () => patchHeaderBrand()
+  const runPatches = () => {
+    const ok1 = patchHeaderBrand()
+    const ok2 = patchHeroContent()
+    return ok1 && ok2
+  }
+
   const observer = new MutationObserver(() => {
-    if (tryPatch()) observer.disconnect()
+    if (runPatches()) observer.disconnect()
   })
 
   observer.observe(document.body, { childList: true, subtree: true })
-  setTimeout(tryPatch, 300)
-  setTimeout(tryPatch, 1200)
+  setTimeout(runPatches, 300)
+  setTimeout(runPatches, 1200)
+  setTimeout(runPatches, 2200)
 }
 
 if (document.readyState === 'loading') {
