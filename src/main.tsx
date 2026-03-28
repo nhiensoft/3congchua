@@ -8,10 +8,11 @@ script.src = '/legacy/index.js'
 script.defer = true
 
 function patchHeaderBrand() {
-  const heading = Array.from(document.querySelectorAll('h1')).find((el) =>
-    (el.textContent || '').includes('Vọng Âm Quá Khứ')
-  ) as HTMLElement | undefined
+  // Target only the brand text inside the fixed header, never the hero headline.
+  const header = document.querySelector('header') as HTMLElement | null
+  if (!header) return false
 
+  const heading = header.querySelector('h1') as HTMLElement | null
   if (!heading) return false
 
   const textBlock = heading.parentElement as HTMLElement | null
@@ -59,7 +60,11 @@ function patchHeroContent() {
   // Remove old injected hero elements from previous patches.
   const oldHeroBadge = document.getElementById('hero-logo-badge')
   if (oldHeroBadge) oldHeroBadge.remove()
-  heroSection.querySelectorAll('#hero-logo-badge, [data-injected-hero-logo], [data-injected-hero-text]').forEach((el) => el.remove())
+  heroSection.querySelectorAll('#hero-logo-badge, [data-injected-hero-logo], [data-injected-hero-text], #menu-logo-3-cong-chua').forEach((el) => el.remove())
+  heroSection.querySelectorAll('img').forEach((img) => {
+    const src = (img as HTMLImageElement).getAttribute('src') || ''
+    if (src.includes('logo-3-cong-chua.jpg')) img.remove()
+  })
 
   // Push hero content down to avoid overlap with fixed menu.
   const textContainer = heroTitle.parentElement as HTMLElement | null
@@ -90,14 +95,21 @@ function patchHeroContent() {
   heroTitle.appendChild(mainLine)
   heroTitle.appendChild(subLine)
 
-  // Hero tagline under title.
-  const introP = heroTitle.parentElement?.querySelector('p') as HTMLElement | null
-  if (introP) {
-    introP.textContent = 'Nơi Dấu Ấn 3 Miền Thăng Hoa, Tri Thức 3 Miền Thăng Hoa'
-    introP.style.color = 'rgba(255,255,255,0.96)'
-    introP.style.textShadow = '0 1px 6px rgba(0,0,0,0.45)'
-    introP.style.fontSize = 'clamp(18px, 2.3vw, 34px)'
-    introP.style.fontWeight = '500'
+  // Hero lines under title.
+  const introPs = Array.from((heroTitle.parentElement as HTMLElement).querySelectorAll('p')) as HTMLElement[]
+  if (introPs[0]) {
+    introPs[0].textContent = 'Nơi Dấu Ấn 3 Miền Thăng Hoa, Tri Thức 3 Miền Thăng Hoa'
+    introPs[0].style.color = 'rgba(255,255,255,0.96)'
+    introPs[0].style.textShadow = '0 1px 6px rgba(0,0,0,0.45)'
+    introPs[0].style.fontSize = 'clamp(18px, 2.3vw, 34px)'
+    introPs[0].style.fontWeight = '500'
+  }
+  if (introPs[1]) {
+    introPs[1].textContent = 'Cùng 3 Công Chúa dấn thân vào một hành trình khám phá những câu chuyện từ ngàn xưa, những giá trị văn hóa bất diệt và ước mơ kiến tạo tương lai'
+    introPs[1].style.color = 'rgba(255,255,255,0.95)'
+    introPs[1].style.textShadow = '0 1px 4px rgba(0,0,0,0.4)'
+    introPs[1].style.fontSize = 'clamp(13px, 1.1vw, 20px)'
+    introPs[1].style.fontWeight = '400'
   }
 
   return true
