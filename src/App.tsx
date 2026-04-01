@@ -3,8 +3,8 @@ import {
   Landmark, Waves, Wheat, GraduationCap,
   Leaf, ShieldCheck, Truck,
   Brain, Star, PartyPopper,
-  DoorOpen, Lightbulb, Heart, Eye, Sparkles,
-  Menu as MenuIcon, X as XIcon, Gift, CheckCircle,
+  Heart,
+  Menu as MenuIcon, X as XIcon, Gift,
   ChevronLeft, ChevronRight,
   type LucideProps,
 } from 'lucide-react'
@@ -761,137 +761,278 @@ function HungYenSection() {
 }
 
 /* ====================================================================
-   GIAO LỘ ĐỊNH MỆNH
+   NHÂN VẬT LỊCH SỬ & KẾ THỪA BIỂU TƯỢNG
    ==================================================================== */
-function GiaoLoDinhMenhSection() {
-  const coreValues: { name: string; Icon: ComponentType<LucideProps> }[] = [
-    { name: 'Mở cơ hội', Icon: DoorOpen },
-    { name: 'Mở trí tuệ', Icon: Lightbulb },
-    { name: 'Mở trái tim', Icon: Heart },
-    { name: 'Mở tầm nhìn', Icon: Eye },
-    { name: 'Mở tương lai', Icon: Sparkles },
-  ]
+const HISTORICAL_FIGURES = [
+  { name: 'Trần Thái Tông', desc: 'Hoàng đế đầu tiên của nhà Trần. Năm 1253, đổi Quốc Tử Giám thành Quốc Học viện, mở rộng cho con cái thường dân có sức học xuất sắc.', initial: 'TT', color: 'from-amber-700 to-yellow-600' },
+  { name: 'Trần Minh Tông', desc: 'Hoàng đế thứ năm của nhà Trần nước Đại Việt.', initial: 'TM', color: 'from-amber-800 to-orange-600' },
+  { name: 'Chu Văn An', desc: 'Nhà giáo, thầy thuốc, quan viên Đại Việt cuối thời Trần — biểu tượng bất tử của đạo học Việt Nam.', initial: 'CA', color: 'from-red-800 to-rose-600' },
+  { name: 'Trần Nghệ Tông', desc: 'Hoàng đế thứ 9 nhà Trần. Năm 1370, cho thờ Chu Văn An ở Văn Miếu bên cạnh Khổng Tử.', initial: 'TN', color: 'from-amber-700 to-yellow-600' },
+  { name: 'Lê Thánh Tông', desc: 'Hoàng đế thứ năm của Lê Sơ. Năm 1484, cho dựng bia tiến sĩ từ khoa thi 1442 trở đi.', initial: 'LT', color: 'from-emerald-800 to-teal-600' },
+  { name: 'Lê Hiển Tông', desc: 'Hoàng đế thứ 26 nhà Hậu Lê. Năm 1762, cho sửa lại Quốc Tử Giám, cơ sở đào tạo và giáo dục cao cấp.', initial: 'LH', color: 'from-blue-800 to-indigo-600' },
+  { name: 'Vua Gia Long', desc: 'Vị vua sáng lập nhà Nguyễn. Năm 1802, ấn định Văn Miếu Hà Nội.', initial: 'GL', color: 'from-purple-800 to-violet-600' },
+]
 
+const TIMELINE_EVENTS = [
+  { year: '1076', text: 'Quốc Tử Giám được thành lập' },
+  { year: '1253', text: 'Đổi thành Quốc Học Viện, mở rộng cho thường dân' },
+  { year: '1307', text: 'Mở rộng quy mô Văn Miếu' },
+  { year: '1484', text: 'Dựng bia tiến sĩ đầu tiên' },
+  { year: '1762', text: 'Trùng tu Quốc Tử Giám' },
+  { year: '1802', text: 'Ấn định Văn Miếu Hà Nội' },
+  { year: '2010', text: 'UNESCO công nhận là Di sản tư liệu thế giới' },
+]
+
+function VanMieuHeritageSection() {
   return (
     <section id="giao-lo-dinh-menh" className="relative py-20 md:py-28 overflow-hidden bg-slate-950">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-6">
 
-      <div className="relative z-10 mx-auto max-w-5xl px-4 text-center md:px-6">
+        {/* Nhân vật lịch sử */}
         <Reveal>
-          <h2 className="text-3xl font-extrabold text-amber-300 md:text-5xl" style={{ textShadow: '0 0 20px rgba(245,158,11,0.3)' }}>
-            GIAO LỘ ĐỊNH MỆNH
-          </h2>
-          <p className="mt-2 text-sm uppercase tracking-[0.2em] text-white/70">Khi những dòng chảy hội tụ về đại dương tri thức</p>
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-extrabold text-amber-300 md:text-5xl" style={{ textShadow: '0 0 20px rgba(245,158,11,0.3)' }}>
+              GIAO LỘ ĐỊNH MỆNH
+            </h2>
+            <p className="mt-2 text-sm uppercase tracking-[0.2em] text-white/70">Khi những dòng chảy hội tụ về đại dương tri thức</p>
+          </div>
         </Reveal>
 
-        <Reveal delay={200}>
-          <div className="glass mt-8 rounded-2xl p-6 text-left">
+        <Reveal delay={100}>
+          <div className="glass mt-6 rounded-2xl p-6 text-left mb-12">
             <p className="text-sm text-white/85 leading-relaxed">
               Mang theo sự kiên cường của đất học Thanh Hóa, sức sống khoáng đạt của biển bạc Quảng Ninh, hay nét tinh tế từ phù sa Hưng Yên; định mệnh đã đưa ba tâm hồn đồng điệu gặp gỡ. Chúng mình không chỉ mang theo niềm tự hào quê hương, mà còn mang cả khát khao chinh phục những tầm cao mới, đem tri thức về xây dựng quê hương.
             </p>
           </div>
         </Reveal>
 
-        {/* 3 Princesses converging */}
-        <Reveal delay={400}>
-          <div className="mt-10 flex items-center justify-center gap-4 md:gap-8">
-            <div className="text-center">
-              <div className="glass rounded-full p-4 inline-block"><Landmark className="h-8 w-8 text-amber-300" /></div>
-              <p className="mt-2 text-xs text-amber-300/80">Thanh Hóa</p>
-            </div>
-            <div className="text-amber-400/60"><ChevronRight className="h-5 w-5" /></div>
-            <div className="text-center">
-              <div className="rounded-full border-4 border-amber-400/60 p-2 inline-block" style={{ animation: 'pulse-glow 2s ease-in-out infinite' }}>
-                <img src="/images/logo-dh-mo.png" alt="Logo ĐH Mở" className="h-16 w-16 md:h-20 md:w-20 rounded-full object-contain bg-white p-1" />
-              </div>
-              <p className="mt-2 text-xs text-amber-300">Đại Học Mở</p>
-            </div>
-            <div className="text-amber-400/60"><ChevronLeft className="h-5 w-5" /></div>
-            <div className="text-center flex flex-col items-center gap-4">
-              <div>
-                <div className="glass rounded-full p-4 inline-block"><Waves className="h-8 w-8 text-cyan-300" /></div>
-                <p className="mt-2 text-xs text-cyan-300/80">Quảng Ninh</p>
-              </div>
-            </div>
+        <Reveal delay={200}>
+          <h3 className="text-center text-xl font-bold text-amber-200 md:text-2xl mb-8">Những Nhân Vật Kiến Tạo Nền Giáo Dục Việt</h3>
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+            {HISTORICAL_FIGURES.map((fig, i) => (
+              <Reveal key={fig.name} delay={i * 80}>
+                <div className="text-center">
+                  <div className={`mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br ${fig.color} text-2xl font-extrabold text-white shadow-lg md:h-24 md:w-24`}>
+                    {fig.initial}
+                  </div>
+                  <h4 className="text-sm font-bold text-amber-200 md:text-base">{fig.name}</h4>
+                  <p className="mt-1 text-xs leading-relaxed text-white/70 md:text-sm">{fig.desc}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-          <div className="mt-2 flex justify-center">
-            <div className="text-center">
-              <div className="text-amber-400/60 rotate-90 inline-block mb-2"><ChevronRight className="h-5 w-5" /></div>
-              <div className="glass rounded-full p-4 inline-block"><Wheat className="h-8 w-8 text-emerald-300" /></div>
-              <p className="mt-2 text-xs text-emerald-300/80">Hưng Yên</p>
+        </Reveal>
+
+        {/* Timeline */}
+        <Reveal delay={300}>
+          <div className="mt-16 mb-12">
+            <h3 className="text-center text-lg font-bold text-amber-200 md:text-xl mb-6">Dòng Chảy Lịch Sử</h3>
+            <div className="relative mx-auto max-w-3xl">
+              <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-amber-400/30" />
+              {TIMELINE_EVENTS.map((ev, i) => (
+                <div key={ev.year} className={`relative mb-6 flex items-start gap-4 ${i % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} md:px-8`}>
+                  <div className={`flex-1 ${i % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                    <span className="text-lg font-extrabold text-amber-300">{ev.year}</span>
+                    <p className="text-xs text-white/75 mt-0.5 leading-relaxed md:text-sm">{ev.text}</p>
+                  </div>
+                  <div className="relative z-10 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-amber-400 bg-slate-950 mt-1" />
+                  <div className="flex-1" />
+                </div>
+              ))}
             </div>
           </div>
         </Reveal>
 
-        {/* 5 chữ Mở */}
-        <Reveal delay={600}>
-          <h3 className="mt-12 text-sm uppercase tracking-[0.15em] text-amber-400/80 font-semibold">NGŨ MỞ</h3>
-          <div className="mt-4 flex flex-wrap justify-center gap-3">
-            {coreValues.map((v, i) => (
-              <div key={v.name} className="glass float-card rounded-xl px-5 py-3 text-center" style={{ animationDelay: `${i * 0.4}s` }}>
-                <v.Icon className="h-6 w-6 mx-auto text-amber-300" />
-                <p className="mt-1 text-xs font-semibold text-amber-200">{v.name}</p>
-              </div>
-            ))}
+        {/* Thân Nhân Trung quote */}
+        <Reveal delay={400}>
+          <div className="mt-8 text-center">
+            <blockquote className="mx-auto max-w-2xl">
+              <p className="text-xl font-bold italic text-amber-200 md:text-2xl" style={{ fontFamily: 'Georgia, serif' }}>
+                "Hiền tài là nguyên khí quốc gia, nguyên khí thịnh thì thế nước mạnh mà hưng, nguyên khí suy thì thế nước yếu mà thấp."
+              </p>
+              <footer className="mt-4 text-sm font-medium text-amber-400/80">
+                — Thân Nhân Trung
+              </footer>
+            </blockquote>
           </div>
         </Reveal>
+
+        {/* KẾ THỪA TỪ BIỂU TƯỢNG */}
+        <Reveal delay={500}>
+          <div className="mt-16">
+            <h3 className="text-center text-xl font-bold text-amber-200 md:text-2xl" style={{ fontFamily: 'Georgia, serif' }}>
+              KẾ THỪA TỪ BIỂU TƯỢNG, VƯƠN XA BẰNG KHÁT VỌNG
+            </h3>
+            <p className="mt-4 mx-auto max-w-3xl text-center text-sm text-white/80 leading-relaxed">
+              Khép lại không gian cổ kính của Văn Miếu, chúng ta bắt đầu một hành trình mới — nơi biểu tượng Khuê Văn Các được nâng niu trên ngực áo của hàng vạn sinh viên. Hãy cùng khám phá xem, tinh thần đạo học nghìn năm đã được Trường Đại học Mở Hà Nội kế thừa và lan tỏa như thế nào.
+            </p>
+
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              <div className="glass-gold rounded-2xl p-6">
+                <h4 className="text-lg font-bold text-amber-200">Khuê Văn Các</h4>
+                <p className="mt-2 text-sm text-white/80 leading-relaxed">
+                  Hình tượng Khuê Văn Các biểu tượng cho Quốc Tử Giám — Trường Đại học đầu tiên của Việt Nam. Khuê Văn Các chính là biểu tượng của sự đỗ đạt, thành công trong học hành và sự nghiệp, đồng thời thể hiện khát vọng vươn lên của con người Việt Nam qua mọi thời đại.
+                </p>
+              </div>
+              <div className="glass-gold rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <img src="/images/logo-dh-mo.png" alt="Logo ĐH Mở" className="h-12 w-12 rounded-full object-contain bg-white p-1 border-2 border-amber-400/50" />
+                  <h4 className="text-lg font-bold text-amber-200">Trường Đại học Mở Hà Nội</h4>
+                </div>
+                <p className="text-sm text-white/80 leading-relaxed">
+                  Hình tượng Khuê Văn Các được sử dụng trong logo, tượng trưng cho sứ mệnh tiên phong trong giáo dục mở và đào tạo từ xa ở Việt Nam. Hình tượng ô cửa tượng trưng cho cánh cửa tri thức. Các tia sáng tỏa đi các hướng mang ý nghĩa luôn hội nhập, nâng cao chất lượng đào tạo — tượng trưng cho ước mơ bay cao, bay xa của người học.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
       </div>
     </section>
   )
 }
 
 /* ====================================================================
-   ĐẠI HỌC MỞ HÀ NỘI
+   ĐẠI HỌC MỞ HÀ NỘI — EXPANDED
    ==================================================================== */
+const HOU_STATS = [
+  { value: '32', label: 'Năm', sub: 'hình thành & phát triển' },
+  { value: '5', label: 'Ngành', sub: 'đào tạo chuyên sâu' },
+  { value: '35.000+', label: 'Sinh viên', sub: 'đang theo học' },
+  { value: '~95%', label: 'Có việc làm', sub: 'sau tốt nghiệp' },
+  { value: '79', label: 'Trạm', sub: 'đào tạo từ xa' },
+]
+
+const KHOA_KT_TABS = [
+  {
+    title: 'Quá trình hình thành',
+    content: 'Được thành lập ngày 01/12/1993 theo quyết định của Bộ trưởng Bộ Giáo dục và Đào tạo, Khoa Kinh tế — Trường Đại học Mở Hà Nội là một đơn vị đào tạo có bề dày truyền thống với các hệ đào tạo đa dạng: ngành Kế toán, Quản trị kinh doanh và Thương mại điện tử.',
+  },
+  {
+    title: 'Thành công vượt trội',
+    content: 'Hành trình 32 năm mở, hội nhập và lan tỏa nổi bật với nhiều thành tích: Nhiều năm liên tục đạt danh hiệu Tập thể lao động xuất sắc của Chính phủ, Bằng khen của Thủ tướng vì nhiều thành tích trong đào tạo và NCKH, và nhiều bằng khen của Bộ trưởng Bộ GD&ĐT.',
+  },
+  {
+    title: 'Chương trình đào tạo',
+    content: 'Khoa đang quản lý 05 chương trình đào tạo: 03 bậc đại học (Kế toán, Quản trị kinh doanh, Thương mại điện tử) và 02 bậc thạc sĩ (Kế toán, Quản trị kinh doanh) với hơn 3.000 học viên, sinh viên đang theo học.',
+  },
+  {
+    title: 'Hoạt động Văn – Thể – Mỹ',
+    content: 'Khoa luôn coi trọng phát triển câu lạc bộ sinh viên: Econ Club, CLB TMĐT, CLB Kế toán, CLB Thể thao – Võ thuật. Thường xuyên tổ chức các cuộc thi Khởi nghiệp, Tài năng kinh doanh số, Tài năng kế toán, Olympic tiếng Anh, giải bóng đá nam-nữ.',
+  },
+]
+
 function DaiHocMoSection() {
+  const [activeTab, setActiveTab] = useState(0)
+
   return (
     <section id="dai-hoc-mo" className="bg-slate-900 py-14 text-white md:py-20">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
-          <Reveal>
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img src="/images/logo-dh-mo.png" alt="Logo ĐH Mở" className="h-14 w-14 rounded-full object-contain bg-white p-1 border-2 border-amber-400/50" />
-                <div>
-                  <h2 className="text-2xl font-bold md:text-4xl">Đại học Mở Hà Nội</h2>
-                  <p className="text-sm text-amber-300/80">Nơi Tri Thức Bay Cao, Kiến Tạo Tương Lai</p>
-                </div>
-              </div>
-              <p className="mt-3 text-slate-200">
-                Đại học Mở Hà Nội là cơ sở giáo dục đại học công lập đa ngành, định hướng mở rộng cơ hội học tập, phát triển năng lực thực tiễn và hội nhập.
-              </p>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {['Hơn 37.000 sinh viên đang theo học', 'Môi trường học tập năng động và linh hoạt', 'Đào tạo gắn với nhu cầu xã hội', 'Khuyến khích đổi mới sáng tạo'].map(item => (
-                  <div key={item} className="flex items-start gap-2 rounded-lg border border-slate-700 bg-slate-800/70 p-3 text-sm text-slate-100">
-                    <CheckCircle className="h-4 w-4 shrink-0 mt-0.5 text-emerald-400" /> {item}
-                  </div>
-                ))}
-              </div>
+        {/* Title */}
+        <Reveal>
+          <div className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <img src="/images/logo-dh-mo.png" alt="Logo ĐH Mở" className="h-14 w-14 rounded-full object-contain bg-white p-1 border-2 border-amber-400/50" />
             </div>
-          </Reveal>
+            <h2 className="text-2xl font-extrabold md:text-4xl">
+              TRƯỜNG ĐẠI HỌC MỞ HÀ NỘI
+            </h2>
+            <p className="mt-1 text-lg font-semibold text-amber-300">
+              Viết Tiếp Chương Mới Của Trí Tuệ Việt
+            </p>
+            <p className="mt-3 mx-auto max-w-2xl text-sm text-slate-300 leading-relaxed">
+              Đại học Mở Hà Nội là cơ sở giáo dục đại học công lập đa ngành, định hướng mở rộng cơ hội học tập, phát triển năng lực thực tiễn và hội nhập.
+            </p>
+          </div>
+        </Reveal>
 
-          <Reveal delay={200}>
-            <div className="rounded-2xl border border-slate-700 bg-slate-800/80 p-6">
-              <h3 className="text-xl font-bold">Khoa Kinh tế</h3>
-              <p className="mt-2 text-sm text-slate-200">
-                Đào tạo nguồn nhân lực kinh tế chất lượng cao với ba ngành trọng tâm, phát triển tư duy quản trị và năng lực nghề nghiệp.
-              </p>
+        {/* Stats */}
+        <Reveal delay={100}>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-5 mb-12">
+            {HOU_STATS.map(s => (
+              <div key={s.label} className="glass rounded-xl p-4 text-center">
+                <p className="text-2xl font-extrabold text-amber-300 md:text-3xl">{s.value}</p>
+                <p className="text-sm font-semibold text-white mt-1">{s.label}</p>
+                <p className="text-[10px] text-white/50 mt-0.5">{s.sub}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
 
-              <ul className="mt-4 space-y-2 text-sm text-slate-100">
-                <li>• Quản trị kinh doanh</li>
-                <li>• Kế toán</li>
-                <li>• Thương mại điện tử</li>
-              </ul>
+        {/* Khoa Kinh tế */}
+        <Reveal delay={200}>
+          <div className="rounded-2xl border border-slate-700 bg-slate-800/80 overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h3 className="text-xl font-extrabold md:text-2xl">KHOA KINH TẾ, TRƯỜNG ĐẠI HỌC MỞ HÀ NỘI</h3>
+              <p className="mt-1 text-sm text-amber-300/80">Kiến tạo tương lai</p>
+            </div>
 
-              <h4 className="mt-5 text-sm font-semibold uppercase tracking-wide text-amber-300">5 chữ MỞ</h4>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {['Mở cơ hội', 'Mở trái tim', 'Mở trí tuệ', 'Mở tầm nhìn', 'Mở tương lai'].map(v => (
+            {/* Tabs */}
+            <div className="flex flex-wrap border-t border-slate-700">
+              {KHOA_KT_TABS.map((tab, i) => (
+                <button
+                  key={tab.title}
+                  onClick={() => setActiveTab(i)}
+                  className={`flex-1 min-w-[140px] px-4 py-3 text-xs font-semibold transition cursor-pointer ${
+                    activeTab === i
+                      ? 'bg-amber-500/15 text-amber-300 border-b-2 border-amber-400'
+                      : 'text-white/60 hover:text-white/80 hover:bg-white/5'
+                  }`}
+                >
+                  {tab.title}
+                </button>
+              ))}
+            </div>
+
+            <div className="p-6 md:p-8">
+              <p className="text-sm text-slate-200 leading-relaxed">{KHOA_KT_TABS[activeTab].content}</p>
+            </div>
+
+            {/* NGŨ MỞ */}
+            <div className="border-t border-slate-700 p-6 md:p-8">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-amber-300 mb-3">5 chữ MỞ</h4>
+              <div className="flex flex-wrap gap-2">
+                {['Mở cơ hội', 'Mở trí tuệ', 'Mở trái tim', 'Mở tầm nhìn', 'Mở tương lai'].map(v => (
                   <span key={v} className="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs text-amber-200">{v}</span>
                 ))}
               </div>
             </div>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
+
+        {/* 2 ô clickable */}
+        <Reveal delay={300}>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <a
+              href="#lien-he"
+              className="glass group flex items-center gap-4 rounded-xl p-5 transition hover:bg-white/15"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-500/20">
+                <Heart className="h-6 w-6 text-amber-300" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-amber-200 group-hover:text-amber-100">Gửi câu hỏi cho chúng tôi</p>
+                <p className="text-xs text-white/60">Liên hệ trực tiếp với đội ngũ dự án</p>
+              </div>
+            </a>
+            <a
+              href="https://tuyensinh.hou.edu.vn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass group flex items-center gap-4 rounded-xl p-5 transition hover:bg-white/15"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-500/20">
+                <GraduationCap className="h-6 w-6 text-emerald-300" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-emerald-200 group-hover:text-emerald-100">Tuyển sinh</p>
+                <p className="text-xs text-white/60">Tìm hiểu thông tin tuyển sinh tại tuyensinh.hou.edu.vn</p>
+              </div>
+            </a>
+          </div>
+        </Reveal>
+
       </div>
     </section>
   )
@@ -956,7 +1097,7 @@ export default function App() {
       <ThanhHoaSection />
       <QuangNinhSection />
       <HungYenSection />
-      <GiaoLoDinhMenhSection />
+      <VanMieuHeritageSection />
       <DaiHocMoSection />
       <Footer />
     </div>
