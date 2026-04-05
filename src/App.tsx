@@ -1184,90 +1184,91 @@ const NGU_MO = [
   { title: 'Mở Tương Lai', icon: '🚀', desc: 'Kiến tạo tương lai bằng tri thức, đổi mới sáng tạo và khát vọng cống hiến.' },
 ]
 
-/* Stream colour tokens */
-const STREAMS = [
-  {
-    id: 'thanh-hoa',
-    region: 'Thanh Hóa',
-    landmark: 'Thành Nhà Hồ',
-    img: '/images/thanh-nha-ho-stone.png',
-    fallback: '/images/thanh-nha-ho.png',
-    color: '#78716c',
-    colorLight: '#d6d3d1',
-    colorDark: '#44403c',
-    colorBg: 'rgba(87,83,78,0.12)',
-    label: 'Cổ kính • Trầm mặc',
-    abbr: 'TH',
-  },
-  {
-    id: 'quang-ninh',
-    region: 'Quảng Ninh',
-    landmark: 'Vịnh Hạ Long',
-    img: '/images/vinh-ha-long-teal.png',
-    fallback: '/images/vinh-ha-long.png',
-    color: '#0d9488',
-    colorLight: '#99f6e4',
-    colorDark: '#0f766e',
-    colorBg: 'rgba(13,148,136,0.10)',
-    label: 'Hùng vĩ • Khoáng đạt',
-    abbr: 'QN',
-  },
-  {
-    id: 'hung-yen',
-    region: 'Hưng Yên',
-    landmark: 'Phố Hiến',
-    img: '/images/hung-yen-amber.png',
-    fallback: '/hung-yen.jpg',
-    color: '#d97706',
-    colorLight: '#fde68a',
-    colorDark: '#b45309',
-    colorBg: 'rgba(217,119,6,0.10)',
-    label: 'Phù sa • Tinh tế',
-    abbr: 'HY',
-  },
-]
-
 function VanMieuHeritageSection() {
   return (
     <section
       id="giao-lo-dinh-menh"
-      className="relative py-16 md:py-24 overflow-hidden"
+      className="relative overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #F5F0E8 0%, #EDE3CF 50%, #F0EBE0 100%)' }}
     >
-      {/* Parchment grain texture */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.06]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: '300px 300px',
-        }}
-      />
-      {/* Top gold accent line */}
+      {/* Top gold accent */}
       <div className="absolute top-0 inset-x-0 h-1 z-10" style={{ background: 'linear-gradient(90deg, transparent, #d4af37 30%, #d4af37 70%, transparent)' }} />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-8">
+      {/* HERO COMPOSITE — AI-generated artwork */}
+      <Reveal direction="zoom">
+        <div className="relative w-full">
+          {/* Main hero image */}
+          <img
+            src="/images/giao-lo/hero-final.png"
+            alt="Giao Lo Dinh Menh — Vinh Ha Long, Thanh Nha Ho, DH Mo Ha Noi"
+            className="w-full h-auto block"
+            style={{ objectFit: 'cover' }}
+          />
 
-        {/* Title */}
-        <Reveal direction="zoom">
-          <div className="text-center mb-8">
-            <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-amber-600 mb-2">Essence of the Nation</p>
+          {/* Overlay: Title block at top */}
+          <div
+            className="absolute top-0 inset-x-0 flex flex-col items-center pt-4 md:pt-6"
+            style={{ background: 'linear-gradient(180deg, rgba(20,12,0,0.72) 0%, transparent 100%)' }}
+          >
+            <p className="text-[9px] md:text-[11px] uppercase tracking-[0.35em] text-amber-300 mb-0.5">Essence of the Nation</p>
             <h2
-              className="text-4xl font-extrabold tracking-tight md:text-6xl"
-              style={{ color: '#2c1f0a', textShadow: '0 2px 16px rgba(180,130,40,0.20)' }}
+              className="text-2xl md:text-4xl font-extrabold tracking-tight text-white"
+              style={{ textShadow: '0 2px 16px rgba(0,0,0,0.8)' }}
             >
               GIAO LỘ ĐỊNH MỆNH
             </h2>
-            <p className="mt-3 text-[11px] md:text-sm uppercase tracking-[0.25em]" style={{ color: '#92400e' }}>
+            <p className="text-[9px] md:text-xs uppercase tracking-[0.2em] text-amber-200/80 mt-0.5">
               Khi những dòng chảy hội tụ về đại dương tri thức
             </p>
           </div>
-        </Reveal>
 
-        {/* Description */}
-        <Reveal delay={80} direction="up">
+          {/* Label: Quang Ninh — upper left */}
+          <div className="absolute top-[22%] left-[3%]">
+            <div
+              className="rounded px-2 py-0.5 md:px-3 md:py-1"
+              style={{ background: 'rgba(13,148,136,0.82)', backdropFilter: 'blur(6px)' }}
+            >
+              <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-teal-100">Quảng Ninh</p>
+              <p className="text-[9px] md:text-xs font-extrabold text-white">Vịnh Hạ Long</p>
+            </div>
+          </div>
+
+          {/* Label: Thanh Hoa — lower left */}
+          <div className="absolute bottom-[28%] left-[3%]">
+            <div
+              className="rounded px-2 py-0.5 md:px-3 md:py-1"
+              style={{ background: 'rgba(68,64,60,0.85)', backdropFilter: 'blur(6px)' }}
+            >
+              <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-stone-300">Thanh Hóa</p>
+              <p className="text-[9px] md:text-xs font-extrabold text-white">Thành Nhà Hồ</p>
+            </div>
+          </div>
+
+          {/* Label: HOU — right side */}
+          <div className="absolute bottom-[20%] right-[2%] text-right">
+            <div
+              className="rounded px-2 py-0.5 md:px-3 md:py-1"
+              style={{ background: 'rgba(30,58,138,0.85)', backdropFilter: 'blur(6px)' }}
+            >
+              <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-blue-200">Hanoi Open University</p>
+              <p className="text-[9px] md:text-xs font-extrabold text-white">Trường ĐH Mở Hà Nội</p>
+            </div>
+          </div>
+
+          {/* Bottom gradient fade */}
           <div
-            className="rounded-2xl p-5 md:p-7 text-center mb-12 max-w-3xl mx-auto border shadow-md"
-            style={{ background: 'rgba(255,252,245,0.82)', backdropFilter: 'blur(14px)', borderColor: 'rgba(212,175,55,0.35)' }}
+            className="absolute bottom-0 inset-x-0 h-24 md:h-32"
+            style={{ background: 'linear-gradient(0deg, #EDE3CF 0%, transparent 100%)' }}
+          />
+        </div>
+      </Reveal>
+
+      {/* Description */}
+      <div className="relative z-10 mx-auto max-w-4xl px-4 md:px-8 -mt-6 mb-10">
+        <Reveal delay={100} direction="up">
+          <div
+            className="rounded-2xl p-5 md:p-6 text-center border shadow-lg"
+            style={{ background: 'rgba(255,252,245,0.92)', backdropFilter: 'blur(14px)', borderColor: 'rgba(212,175,55,0.40)' }}
           >
             <p className="text-sm md:text-base leading-relaxed" style={{ color: '#44403c' }}>
               Mang theo sự kiên cường của đất học Thanh Hóa, sức sống khoáng đạt của biển bạc Quảng Ninh,
@@ -1277,154 +1278,12 @@ function VanMieuHeritageSection() {
             </p>
           </div>
         </Reveal>
+      </div>
 
-        {/* 3-STREAM FLOW: [Landmark cards] —streams—> [HOU Logo] */}
-        <Reveal delay={120} direction="up">
-          <div className="flex flex-col md:flex-row items-center md:items-stretch gap-6 md:gap-0">
-
-            {/* LEFT: 3 landmark image cards */}
-            <div className="flex flex-col gap-5 w-full md:w-[270px] shrink-0 z-10">
-              {STREAMS.map((s) => (
-                <div
-                  key={s.id}
-                  className="rounded-2xl overflow-hidden shadow-lg border-2 transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl"
-                  style={{ borderColor: s.color, background: s.colorBg }}
-                >
-                  <div className="relative h-28 md:h-32 overflow-hidden">
-                    <img
-                      src={s.img}
-                      onError={(e) => { (e.currentTarget as HTMLImageElement).src = s.fallback }}
-                      alt={s.landmark}
-                      className="w-full h-full object-cover"
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: `linear-gradient(180deg, ${s.color}22 0%, ${s.color}66 100%)` }}
-                    />
-                    <div
-                      className="absolute top-2 left-2 rounded-full px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase text-white shadow"
-                      style={{ background: s.colorDark }}
-                    >
-                      {s.region}
-                    </div>
-                  </div>
-                  <div className="px-3 py-2 flex items-center justify-between" style={{ background: `${s.colorDark}ee` }}>
-                    <div>
-                      <p className="text-[10px] tracking-widest uppercase font-semibold" style={{ color: s.colorLight }}>{s.label}</p>
-                      <p className="text-sm font-extrabold text-white">{s.landmark}</p>
-                    </div>
-                    <div
-                      className="rounded-full h-7 w-7 flex items-center justify-center text-[10px] font-black text-white shrink-0"
-                      style={{ background: s.color }}
-                    >
-                      {s.abbr}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* CENTER: Animated SVG streams flowing left to right */}
-            <div className="hidden md:block flex-1 relative" style={{ minHeight: '360px' }}>
-              <svg
-                viewBox="0 0 300 420"
-                className="absolute inset-0 w-full h-full"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <linearGradient id="gStone" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#78716c" stopOpacity="0.9" />
-                    <stop offset="100%" stopColor="#78716c" stopOpacity="0.3" />
-                  </linearGradient>
-                  <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#0d9488" stopOpacity="0.9" />
-                    <stop offset="100%" stopColor="#0d9488" stopOpacity="0.3" />
-                  </linearGradient>
-                  <linearGradient id="gAmber" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#d97706" stopOpacity="0.9" />
-                    <stop offset="100%" stopColor="#d97706" stopOpacity="0.3" />
-                  </linearGradient>
-                  <marker id="mStone" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                    <path d="M0,0 L7,3.5 L0,7 Z" fill="#78716c" />
-                  </marker>
-                  <marker id="mTeal" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                    <path d="M0,0 L7,3.5 L0,7 Z" fill="#0d9488" />
-                  </marker>
-                  <marker id="mAmber" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                    <path d="M0,0 L7,3.5 L0,7 Z" fill="#d97706" />
-                  </marker>
-                </defs>
-
-                {/* Stream 1: Thanh Hoa — Thanh Nha Ho — stone gray */}
-                <path
-                  d="M 0,65 C 100,65 180,210 300,210"
-                  stroke="url(#gStone)" strokeWidth="4" fill="none"
-                  className="path-animate" markerEnd="url(#mStone)"
-                />
-                <circle cx="80" cy="87" r="4" fill="#78716c" opacity="0.6" />
-                <circle cx="155" cy="142" r="3" fill="#78716c" opacity="0.4" />
-
-                {/* Stream 2: Quang Ninh — Vinh Ha Long — teal/xanh luc */}
-                <path
-                  d="M 0,210 C 80,210 200,210 300,210"
-                  stroke="url(#gTeal)" strokeWidth="5" fill="none"
-                  className="path-animate" style={{ animationDelay: '0.35s' }} markerEnd="url(#mTeal)"
-                />
-                <circle cx="80" cy="210" r="4.5" fill="#0d9488" opacity="0.7" />
-                <circle cx="175" cy="210" r="3.5" fill="#0d9488" opacity="0.5" />
-
-                {/* Stream 3: Hung Yen — Pho Hien — amber */}
-                <path
-                  d="M 0,355 C 100,355 180,210 300,210"
-                  stroke="url(#gAmber)" strokeWidth="4" fill="none"
-                  className="path-animate" style={{ animationDelay: '0.7s' }} markerEnd="url(#mAmber)"
-                />
-                <circle cx="80" cy="333" r="4" fill="#d97706" opacity="0.6" />
-                <circle cx="155" cy="278" r="3" fill="#d97706" opacity="0.4" />
-
-                {/* Convergence glow rings */}
-                <circle cx="298" cy="210" r="20" fill="rgba(212,175,55,0.18)" />
-                <circle cx="298" cy="210" r="10" fill="rgba(212,175,55,0.28)" />
-              </svg>
-            </div>
-
-            {/* RIGHT: HOU Logo — convergence */}
-            <div className="flex flex-col items-center justify-center shrink-0 z-10 md:w-[190px]">
-              <div className="relative" style={{ padding: '14px' }}>
-                <div
-                  className="rounded-full overflow-hidden border-4 shadow-2xl"
-                  style={{ borderColor: '#d4af37', background: '#fff', width: 140, height: 140 }}
-                >
-                  <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="w-full h-full object-contain p-2" />
-                </div>
-                <div
-                  className="absolute inset-0 rounded-full animate-ping"
-                  style={{ border: '2px solid rgba(212,175,55,0.30)', animationDuration: '2.8s' }}
-                />
-              </div>
-              <p className="mt-2 text-center text-[10px] uppercase tracking-[0.18em] font-bold" style={{ color: '#92400e' }}>
-                Hanoi Open University
-              </p>
-              <p className="text-center text-[10px]" style={{ color: '#78716c' }}>
-                Trường Đại Học Mở Hà Nội
-              </p>
-            </div>
-
-          </div>
-        </Reveal>
-
-        {/* Mobile connector dots */}
-        <div className="md:hidden flex justify-center my-4">
-          <div className="flex flex-col items-center gap-1.5">
-            {[0, 1, 2, 3].map(i => (
-              <div key={i} className="h-2 w-2 rounded-full opacity-50" style={{ background: '#d4af37' }} />
-            ))}
-          </div>
-        </div>
-
-        {/* NGU MO section */}
-        <Reveal delay={200} direction="right">
-          <div className="text-center mb-8 mt-14">
+      {/* NGU MO */}
+      <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-8 pb-16 md:pb-24">
+        <Reveal delay={150} direction="right">
+          <div className="text-center mb-8">
             <div className="inline-flex items-center gap-3 mb-3">
               <div className="h-px w-10 md:w-20" style={{ background: 'linear-gradient(90deg, transparent, #d4af37)' }} />
               <p className="text-[10px] md:text-xs uppercase tracking-[0.3em]" style={{ color: '#92400e' }}>Đại Học Mở Hà Nội — Khoa Kinh Tế</p>
@@ -1439,7 +1298,7 @@ function VanMieuHeritageSection() {
           </div>
         </Reveal>
 
-        <Reveal delay={300} direction="up">
+        <Reveal delay={250} direction="up">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-5 md:gap-5">
             {NGU_MO.map((item, i) => (
               <div
@@ -1459,10 +1318,9 @@ function VanMieuHeritageSection() {
             ))}
           </div>
         </Reveal>
-
       </div>
 
-      {/* Bottom gold accent line */}
+      {/* Bottom gold accent */}
       <div className="absolute bottom-0 inset-x-0 h-1 z-10" style={{ background: 'linear-gradient(90deg, transparent, #d4af37 30%, #d4af37 70%, transparent)' }} />
     </section>
   )
@@ -1473,11 +1331,15 @@ function DaiHocMoSection() {
     <section
       id="dai-hoc-mo"
       className="relative py-16 md:py-24 text-white overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #0a1628 0%, #0f2044 50%, #122560 100%)' }}
+      style={{ background: '#1e4a8a' }}
     >
-      {/* Subtle overlays */}
-      <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(21,101,192,0.18) 0%, transparent 70%)' }} />
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-64" style={{ background: 'linear-gradient(to top, rgba(21,101,192,0.10), transparent)' }} />
+      {/* Background photo — sáng hơn */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ backgroundImage: 'url(/image.png)', backgroundSize: 'cover', backgroundPosition: 'center top', opacity: 0.55 }}
+      />
+      {/* Overlay mỏng giữ readability */}
+      <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(15,35,80,0.55) 0%, rgba(20,50,110,0.45) 100%)' }} />
       {/* Gold accent top line */}
       <div className="pointer-events-none absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, #c8a84b, #f0d060, #c8a84b, transparent)' }} />
 
@@ -1490,14 +1352,14 @@ function DaiHocMoSection() {
               src="/hou.png"
               alt="Logo Đại học Mở Hà Nội"
               className="h-16 w-16 mx-auto mb-4 rounded-full object-contain"
-              style={{ background: 'rgba(255,255,255,0.95)', padding: '6px', boxShadow: '0 0 0 3px rgba(200,168,75,0.45), 0 8px 32px rgba(0,0,0,0.45)' }}
+              style={{ background: 'white', padding: '6px', boxShadow: '0 0 0 3px rgba(200,168,75,0.5), 0 8px 32px rgba(0,0,0,0.35)' }}
             />
-            <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: '#c8a84b' }}>Trường Đại Học Mở Hà Nội</p>
-            <h2 className="text-3xl font-extrabold md:text-5xl text-white tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}>
+            <p className="text-xs tracking-[0.3em] uppercase mb-2 font-semibold drop-shadow" style={{ color: '#f0d060' }}>Trường Đại Học Mở Hà Nội</p>
+            <h2 className="text-3xl font-extrabold md:text-5xl text-white tracking-tight drop-shadow-lg" style={{ fontFamily: 'Georgia, serif' }}>
               Hanoi Open University
             </h2>
             <div className="mx-auto mt-4 h-px w-24 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #c8a84b, #f0d060, #c8a84b, transparent)' }} />
-            <p className="mt-4 text-sm text-slate-300 font-medium tracking-wide">
+            <p className="mt-4 text-sm text-white/80 font-medium tracking-wide drop-shadow">
               Nơi Tri Thức Bay Cao — Kiến Tạo Tương Lai
             </p>
           </div>
@@ -1505,12 +1367,12 @@ function DaiHocMoSection() {
 
         {/* Intro card */}
         <Reveal delay={100} direction="up">
-          <div className="rounded-2xl p-6 md:p-8 mb-6" style={{ background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.09)', boxShadow: '0 8px 40px rgba(0,0,0,0.3)' }}>
-            <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
-              <GraduationCap className="h-5 w-5 shrink-0" style={{ color: '#c8a84b' }} />
+          <div className="rounded-2xl p-6 md:p-8 mb-6" style={{ background: 'rgba(255,255,255,0.14)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.28)', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
+            <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 drop-shadow">
+              <GraduationCap className="h-5 w-5 shrink-0" style={{ color: '#f0d060' }} />
               Khám Phá Đại Học Mở Hà Nội
             </h3>
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+            <p className="text-sm text-white/85 leading-relaxed mb-6">
               Với hơn 30 năm kinh nghiệm trong lĩnh vực giáo dục, Đại học Mở Hà Nội đã khẳng định vị thế là một trong những trường đại học uy tín hàng đầu Việt Nam — tiên phong trong đào tạo từ xa, mở rộng cơ hội học tập cho mọi người.
             </p>
             <div className="grid gap-3 sm:grid-cols-3">
@@ -1519,9 +1381,9 @@ function DaiHocMoSection() {
                 { Icon: Trophy, text: 'Top 15 trường đại học hàng đầu Việt Nam' },
                 { Icon: TrendingUp, text: '95% sinh viên có việc làm sau tốt nghiệp' },
               ].map(item => (
-                <div key={item.text} className="flex items-start gap-3 rounded-xl p-3.5" style={{ background: 'rgba(21,101,192,0.15)', border: '1px solid rgba(21,101,192,0.22)' }}>
-                  <item.Icon className="h-4 w-4 mt-0.5 shrink-0" style={{ color: '#c8a84b' }} />
-                  <span className="text-xs text-slate-200 leading-relaxed">{item.text}</span>
+                <div key={item.text} className="flex items-start gap-3 rounded-xl p-3.5" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.22)' }}>
+                  <item.Icon className="h-4 w-4 mt-0.5 shrink-0" style={{ color: '#f0d060' }} />
+                  <span className="text-xs text-white/90 leading-relaxed">{item.text}</span>
                 </div>
               ))}
             </div>
@@ -1539,12 +1401,12 @@ function DaiHocMoSection() {
             ].map(s => (
               <div
                 key={s.label}
-                className="rounded-2xl p-4 text-center cursor-default transition-all duration-200 hover:-translate-y-1"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(200,168,75,0.22)', boxShadow: '0 4px 24px rgba(0,0,0,0.2)' }}
+                className="rounded-2xl p-4 text-center cursor-default transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+                style={{ background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.28)', backdropFilter: 'blur(16px)' }}
               >
-                <s.Icon className="h-6 w-6 mx-auto mb-2" style={{ color: '#c8a84b' }} />
-                <p className="text-2xl font-extrabold text-white">{s.value}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{s.label}</p>
+                <s.Icon className="h-6 w-6 mx-auto mb-2" style={{ color: '#f0d060' }} />
+                <p className="text-2xl font-extrabold text-white drop-shadow">{s.value}</p>
+                <p className="text-xs text-white/70 mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
@@ -1552,34 +1414,34 @@ function DaiHocMoSection() {
 
         {/* Khoa Kinh Tế */}
         <Reveal delay={200} direction="up">
-          <div className="rounded-2xl p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', backdropFilter: 'blur(16px)', boxShadow: '0 8px 40px rgba(0,0,0,0.3)' }}>
-            <h3 className="text-center text-xl font-bold text-white mb-1 md:text-2xl">Khoa Kinh Tế</h3>
-            <p className="text-center text-xs tracking-widest uppercase mb-1" style={{ color: '#c8a84b' }}>Ươm Mầm Tài Năng Tương Lai</p>
+          <div className="rounded-2xl p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.14)', border: '1px solid rgba(255,255,255,0.28)', backdropFilter: 'blur(20px)', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
+            <h3 className="text-center text-xl font-bold text-white mb-1 md:text-2xl drop-shadow">Khoa Kinh Tế</h3>
+            <p className="text-center text-xs tracking-widest uppercase mb-1 font-semibold" style={{ color: '#f0d060' }}>Ươm Mầm Tài Năng Tương Lai</p>
             <div className="mx-auto mb-6 h-px w-16 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #c8a84b, transparent)' }} />
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-xl p-4" style={{ background: 'rgba(21,101,192,0.10)', border: '1px solid rgba(21,101,192,0.18)' }}>
-                <h4 className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#c8a84b' }}>
-                  <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: '#c8a84b' }} />
+              <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.20)' }}>
+                <h4 className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#f0d060' }}>
+                  <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: '#f0d060' }} />
                   Chuyên Ngành Nổi Bật
                 </h4>
                 <ul className="space-y-2.5 text-sm">
-                  {['Quản trị Kinh doanh', 'Kế toán - Kiểm toán', 'Tài chính - Ngân hàng', 'Marketing & Thương mại điện tử'].map(item => (
-                    <li key={item} className="flex items-center gap-2.5 text-slate-300">
-                      <span className="h-1 w-1 rounded-full shrink-0" style={{ background: '#1976d2' }} />
+                  {['Kế Toán', 'Quản trị Kinh doanh', 'Thương mại điện tử'].map(item => (
+                    <li key={item} className="flex items-center gap-2.5 text-white/90">
+                      <span className="h-1.5 w-1.5 rounded-full shrink-0 bg-white/60" />
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-xl p-4" style={{ background: 'rgba(21,101,192,0.10)', border: '1px solid rgba(21,101,192,0.18)' }}>
-                <h4 className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#c8a84b' }}>
-                  <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: '#c8a84b' }} />
+              <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.20)' }}>
+                <h4 className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: '#f0d060' }}>
+                  <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: '#f0d060' }} />
                   Cơ Hội Nghề Nghiệp
                 </h4>
                 <ul className="space-y-2.5 text-sm">
                   {['Quản lý cấp cao tại các tập đoàn', 'Chuyên gia tư vấn kinh doanh', 'Khởi nghiệp startup thành công', 'Chuyên gia phân tích tài chính'].map(item => (
-                    <li key={item} className="flex items-center gap-2.5 text-slate-300">
-                      <span className="h-1 w-1 rounded-full shrink-0" style={{ background: '#1976d2' }} />
+                    <li key={item} className="flex items-center gap-2.5 text-white/90">
+                      <span className="h-1.5 w-1.5 rounded-full shrink-0 bg-white/60" />
                       {item}
                     </li>
                   ))}
@@ -1592,21 +1454,21 @@ function DaiHocMoSection() {
         {/* CTA */}
         <Reveal delay={250} direction="up">
           <div className="mt-10 text-center">
-            <p className="text-xs tracking-[0.2em] uppercase text-slate-500 mb-5">Cùng Khám Phá Cơ Hội Vàng Tại Khoa Kinh Tế</p>
+            <p className="text-xs tracking-[0.2em] uppercase text-white/60 mb-5">Cùng Khám Phá Cơ Hội Vàng Tại Khoa Kinh Tế</p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="https://tuyensinh.hou.edu.vn/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cursor-pointer rounded-full px-7 py-3 text-sm font-bold transition-all duration-200 hover:scale-105"
-                style={{ background: 'linear-gradient(90deg, #c8a84b, #f0d060, #c8a84b)', color: '#0a1628', boxShadow: '0 4px 20px rgba(200,168,75,0.4)' }}
+                style={{ background: 'linear-gradient(90deg, #c8a84b, #f0d060, #c8a84b)', color: '#0a1628', boxShadow: '0 4px 20px rgba(200,168,75,0.45)' }}
               >
                 Đăng Ký Tư Vấn Tuyển Sinh
               </a>
               <a
                 href="#lien-he"
-                className="cursor-pointer rounded-full px-7 py-3 text-sm font-semibold text-slate-300 transition-all duration-200 hover:text-white"
-                style={{ border: '1px solid rgba(255,255,255,0.22)' }}
+                className="cursor-pointer rounded-full px-7 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/15"
+                style={{ border: '1px solid rgba(255,255,255,0.45)', backdropFilter: 'blur(8px)' }}
               >
                 Tiếp Tục Hành Trình
               </a>
