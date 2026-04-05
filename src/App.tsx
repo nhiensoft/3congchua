@@ -1219,78 +1219,41 @@ function VanMieuHeritageSection() {
       {/* Top gold accent */}
       <div className="absolute top-0 inset-x-0 h-1 z-10" style={{ background: 'linear-gradient(90deg, transparent, #d4af37 30%, #d4af37 70%, transparent)' }} />
 
-      {/* HERO COMPOSITE — AI-generated artwork */}
+      {/* HERO COMPOSITE — AI artwork */}
       <Reveal direction="zoom">
         <div className="relative w-full">
           {/* Main hero image */}
           <img
-            src="/images/giao-lo/hero-3landmarks.png"
-            alt="Giao Lo Dinh Menh — Vinh Ha Long, Cong Pho Hien, Thanh Nha Ho"
+            src="/images/giao-lo/hero-ai.png"
+            alt="Giao Lo Dinh Menh — Hung Yen Pho Hien, Quang Ninh Ha Long, Thanh Hoa Thanh Nha Ho"
             className="w-full h-auto block"
-            style={{ objectFit: 'cover' }}
           />
 
-
-          {/* Overlay: Title block at top */}
+          {/* HOU logo overlay — center badge */}
           <div
-            className="absolute top-0 inset-x-0 flex flex-col items-center pt-4 md:pt-6"
-            style={{ background: 'linear-gradient(180deg, rgba(20,12,0,0.72) 0%, transparent 100%)' }}
+            className="absolute"
+            style={{ top: '50%', left: '50%', transform: 'translate(-50%, -42%)' }}
           >
-            <p className="text-[9px] md:text-[11px] uppercase tracking-[0.35em] text-amber-300 mb-0.5">Essence of the Nation</p>
-            <h2
-              className="text-2xl md:text-4xl font-extrabold tracking-tight text-white"
-              style={{ textShadow: '0 2px 16px rgba(0,0,0,0.8)' }}
-            >
-              GIAO LỘ ĐỊNH MỆNH
-            </h2>
-            <p className="text-[9px] md:text-xs uppercase tracking-[0.2em] text-amber-200/80 mt-0.5">
-              Khi những dòng chảy hội tụ về đại dương tri thức
-            </p>
-          </div>
-
-          {/* Label: Quang Ninh — upper left */}
-          <div className="absolute top-[18%] left-[2%]">
             <div
-              className="rounded px-2 py-0.5 md:px-3 md:py-1"
-              style={{ background: 'rgba(13,148,136,0.82)', backdropFilter: 'blur(6px)' }}
+              className="rounded-full overflow-hidden shadow-2xl"
+              style={{
+                border: '3px solid #d4af37',
+                background: 'white',
+                width: 'clamp(64px,9vw,160px)',
+                height: 'clamp(64px,9vw,160px)',
+              }}
             >
-              <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-teal-100">Quảng Ninh</p>
-              <p className="text-[9px] md:text-xs font-extrabold text-white">Vịnh Hạ Long</p>
+              <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="w-full h-full object-contain p-1.5" />
             </div>
-          </div>
-
-          {/* Label: Thanh Hoa — lower left */}
-          <div className="absolute bottom-[5%] right-[2%]">
             <div
-              className="rounded px-2 py-0.5 md:px-3 md:py-1"
-              style={{ background: 'rgba(30,58,138,0.85)', backdropFilter: 'blur(6px)' }}
-            >
-              <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-stone-300">Thanh Hóa</p>
-              <p className="text-[9px] md:text-xs font-extrabold text-white">Lam Kinh</p>
-            </div>
-          </div>
-
-          
-
-          {/* HOU Logo — top-right golden background area */}
-          <div className="absolute" style={{ top: '4%', right: '3%' }}>
-            <div className="relative">
-              <div
-                className="rounded-full overflow-hidden shadow-2xl"
-                style={{ border: '3px solid #d4af37', background: 'rgba(255,252,240,0.95)', width: 'clamp(52px,7vw,130px)', height: 'clamp(52px,7vw,130px)' }}
-              >
-                <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="w-full h-full object-contain p-1" />
-              </div>
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{ border: '2px solid rgba(212,175,55,0.5)', animation: 'ping 2.5s cubic-bezier(0,0,0.2,1) infinite' }}
-              />
-            </div>
+              className="absolute inset-0 rounded-full animate-ping"
+              style={{ border: '2px solid rgba(212,175,55,0.45)', animationDuration: '2.5s' }}
+            />
           </div>
 
           {/* Bottom gradient fade */}
           <div
-            className="absolute bottom-0 inset-x-0 h-24 md:h-32"
+            className="absolute bottom-0 inset-x-0 h-20 md:h-28"
             style={{ background: 'linear-gradient(0deg, #EDE3CF 0%, transparent 100%)' }}
           />
         </div>
