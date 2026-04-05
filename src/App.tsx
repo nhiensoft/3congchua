@@ -1219,6 +1219,36 @@ function VanMieuHeritageSection() {
       {/* Top gold accent */}
       <div className="absolute top-0 inset-x-0 h-1 z-10" style={{ background: 'linear-gradient(90deg, transparent, #d4af37 30%, #d4af37 70%, transparent)' }} />
 
+      {/* Section Title */}
+      <div className="relative z-10 text-center pt-14 pb-8 px-4">
+        <Reveal direction="down">
+          <div className="inline-flex items-center gap-3 mb-3">
+            <div className="h-px w-10 md:w-24" style={{ background: 'linear-gradient(90deg, transparent, #d4af37)' }} />
+            <p className="text-[10px] md:text-xs uppercase tracking-[0.35em]" style={{ color: '#92400e' }}>Hành Trình Gặp Gỡ</p>
+            <div className="h-px w-10 md:w-24" style={{ background: 'linear-gradient(90deg, #d4af37, transparent)' }} />
+          </div>
+          <h2
+            className="font-black"
+            style={{
+              fontSize: 'clamp(2rem, 7vw, 4.5rem)',
+              lineHeight: 1.1,
+              background: 'linear-gradient(135deg, #92400e 0%, #d4af37 40%, #b45309 70%, #d4af37 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: 'none',
+              filter: 'drop-shadow(0 2px 8px rgba(180,130,40,0.25))',
+              fontFamily: "'Montserrat', sans-serif",
+            }}
+          >
+            Giao Lộ Định Mệnh
+          </h2>
+          <p className="mt-3 text-sm md:text-base" style={{ color: '#78350f', opacity: 0.85 }}>
+            Nơi Ba Miền Hội Tụ, Một Tương Lai Chung
+          </p>
+        </Reveal>
+      </div>
+
       {/* HERO COMPOSITE — AI artwork */}
       <Reveal direction="zoom">
         <div className="relative w-full">
