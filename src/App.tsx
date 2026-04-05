@@ -1,3 +1,5 @@
+import { Viewer as PSViewer } from '@photo-sphere-viewer/core'
+import '@photo-sphere-viewer/core/index.css'
 import { useEffect, useRef, useState, useContext, createContext, type ReactNode, type ComponentType } from 'react'
 import ChatWidget from './components/ChatWidget'
 import {
@@ -1134,8 +1136,8 @@ function HungYenSection() {
                     Khám phá vườn nhãn lồng Hưng Yên trải rộng, nơi những cây nhãn cổ thụ hàng trăm năm tuổi vẫn trĩu quả mỗi mùa. Đất phù sa sông Hồng tạo nên hương vị ngọt thanh đặc trưng không nơi nào có được.
                   </p>
                 </div>
-                <div className="mt-6">
-                  <img src="/images/vuon-nhan.png" alt="Vườn nhãn 360" className="w-80 h-52 md:w-[500px] md:h-72 rounded-2xl object-cover shadow-2xl" />
+                <div className="mt-6 w-full max-w-2xl">
+                  <Garden360Viewer />
                 </div>
                 <button onClick={() => setPage(2)} className="btn-shine mt-6 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-500 px-6 py-3 font-bold text-white shadow-lg">
                   Khám phá báu vật <Gift className="inline h-5 w-5 ml-1" />
@@ -1278,6 +1280,26 @@ function VanMieuHeritageSection() {
             </div>
           </div>
 
+          {/* HOU Logo — covers the gold medallion in the source image */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ paddingTop: '3%' }}>
+            {/* White circle to mask the gold medallion underneath */}
+            <div style={{ position: 'relative', width: 'clamp(70px, 18vw, 480px)', aspectRatio: '1' }}>
+              <div style={{
+                position: 'absolute', inset: 0, borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(240,235,220,0.92) 55%, transparent 75%)',
+              }} />
+              <img
+                src="/hou.png"
+                alt="Logo Đại học Mở Hà Nội"
+                style={{
+                  position: 'relative', width: '100%', height: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.5))',
+                }}
+              />
+            </div>
+          </div>
+
           {/* Bottom gradient fade */}
           <div
             className="absolute bottom-0 inset-x-0 h-24 md:h-32"
@@ -1349,6 +1371,63 @@ function VanMieuHeritageSection() {
   )
 }
 
+
+/* ====================================================================
+   CAMPUS 360 VIEWER
+   ==================================================================== */
+function Campus360Viewer() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const viewerRef = useRef<PSViewer | null>(null)
+  const [, setLoaded] = useState(false)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    // Init PSViewer only when scrolled into view (after Reveal opacity:0 → 1)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !viewerRef.current) {
+          setTimeout(() => {
+            if (!containerRef.current || viewerRef.current) return
+            viewerRef.current = new PSViewer({
+              container: containerRef.current,
+              panorama: '/images/campus-360-eq.png',
+              defaultYaw: 0,
+              defaultPitch: 0,
+              defaultZoomLvl: 50,
+              touchmoveTwoFingers: false,
+              mousewheelCtrlKey: true,
+              navbar: ['zoom', 'fullscreen'],
+            })
+            setLoaded(true)
+          }, 900)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      viewerRef.current?.destroy()
+      viewerRef.current = null
+    }
+  }, [])
+
+    return (
+    <div className="relative overflow-hidden rounded-2xl shadow-2xl" style={{ border: '1px solid rgba(255,255,255,0.2)' }}>
+      <div ref={containerRef} style={{ width: '100%', height: '420px' }} />
+      <div
+        className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-white/80 flex items-center gap-1.5"
+        style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)', fontSize: '10px' }}
+      >
+        <span>🖱️</span>
+        <span>Kéo để xoay 360° • Cuộn để zoom</span>
+      </div>
+    </div>
+  )
+}
+
 function DaiHocMoSection() {
   return (
     <section
@@ -1385,6 +1464,16 @@ function DaiHocMoSection() {
             <p className="mt-4 text-sm text-white/80 font-medium tracking-wide drop-shadow">
               Nơi Tri Thức Bay Cao — Kiến Tạo Tương Lai
             </p>
+          </div>
+        </Reveal>
+
+        {/* 360 Campus Viewer */}
+        <Reveal delay={80} direction="up">
+          <div className="mb-8">
+            <p className="text-center text-xs tracking-[0.25em] uppercase mb-3 font-semibold" style={{ color: '#f0d060' }}>
+              Khám Phá Khuôn Viên 360°
+            </p>
+            <Campus360Viewer />
           </div>
         </Reveal>
 
