@@ -899,7 +899,7 @@ function VanMieuHeritageSection() {
 
         {/* Logo ĐH Mở ở góc trái */}
         <div className="absolute top-6 left-6 md:left-10 z-20">
-          <img src="/images/logo-dh-mo-white.png" alt="Logo ĐH Mở" className="h-12 w-12 md:h-16 md:w-16 rounded-full object-contain bg-white/80 backdrop-blur p-1 border border-amber-400/50 shadow-md" />
+          <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="h-12 w-12 md:h-16 md:w-16 rounded-full object-contain bg-white/90 backdrop-blur p-1 border border-blue-300/60 shadow-md" />
         </div>
 
         {/* Title */}
