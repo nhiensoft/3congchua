@@ -570,29 +570,29 @@ function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 via-transparent to-black/40 z-[2]" />
 
       {/* Content */}
-      <div className="relative z-[3] text-center px-4 max-w-5xl mx-auto mt-16">
+      <div className="relative z-[3] text-center px-6 w-full max-w-5xl mx-auto mt-16">
         <Reveal direction="down">
-          <h1 className="gradient-title text-5xl md:text-7xl lg:text-8xl leading-tight whitespace-nowrap" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, lineHeight: '1.05' }}>
+          <h1 className="gradient-title text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-tight" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, lineHeight: '1.1' }}>
             Vọng Âm Quá Khứ
           </h1>
         </Reveal>
         <Reveal delay={200} direction="left">
-          <p className="mt-3 text-xl md:text-3xl lg:text-4xl font-bold text-white" style={{ textShadow: '0 0 10px rgba(245,197,66,0.6), 0 0 20px rgba(245,197,66,0.4), 0 0 40px rgba(245,197,66,0.25), 0 2px 8px rgba(0,0,0,0.35)' }}>
+          <p className="mt-3 text-base sm:text-xl md:text-3xl lg:text-4xl font-bold text-white" style={{ textShadow: '0 0 10px rgba(245,197,66,0.6), 0 0 20px rgba(245,197,66,0.4), 0 0 40px rgba(245,197,66,0.25), 0 2px 8px rgba(0,0,0,0.35)' }}>
             Hành Trình Di Sản Của 3 Công Chúa
           </p>
         </Reveal>
         <Reveal delay={400} direction="right">
-          <p className="mt-5 text-lg md:text-2xl font-medium text-white/95" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.45)' }}>
+          <p className="mt-4 text-sm sm:text-lg md:text-2xl font-medium text-white/95" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.45)' }}>
             Nơi Dấu Ấn Ba Miền Thăng Hoa, Tri Thức Kiến Tạo Tương Lai
           </p>
         </Reveal>
         <Reveal delay={600} direction="zoom">
-          <p className="mt-4 text-sm md:text-base text-white/85 max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+          <p className="mt-3 text-xs sm:text-sm md:text-base text-white/85 max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Cùng 3 Công Chúa dấn thân vào một hành trình khám phá những câu chuyện từ ngàn xưa, những giá trị văn hóa bất diệt và ước mơ kiến tạo tương lai
           </p>
         </Reveal>
         <Reveal delay={800}>
-          <a href="#gioi-thieu" className="btn-shine mt-8 inline-flex rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-4 font-bold text-white shadow-lg shadow-amber-500/25 transition hover:shadow-amber-500/40 hover:scale-105">
+          <a href="#gioi-thieu" className="btn-shine mt-8 inline-flex rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-3 sm:px-8 sm:py-4 font-bold text-white text-sm sm:text-base shadow-lg shadow-amber-500/25 transition hover:shadow-amber-500/40 hover:scale-105">
             Bắt Đầu Hành Trình Khám Phá Ngay
           </a>
         </Reveal>
@@ -1278,11 +1278,13 @@ function DaiHocMoSection() {
     <section
       id="dai-hoc-mo"
       className="relative py-16 md:py-24 text-white overflow-hidden"
-      style={{ background: 'linear-gradient(150deg, #0d3d8e 0%, #1565c0 45%, #1976d2 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #0a1628 0%, #0f2044 50%, #122560 100%)' }}
     >
-      {/* Decorative blobs */}
-      <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #fff 0%, transparent 70%)' }} />
-      <div className="pointer-events-none absolute -bottom-20 -left-20 h-80 w-80 rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #90caf9 0%, transparent 70%)' }} />
+      {/* Subtle overlays */}
+      <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(21,101,192,0.18) 0%, transparent 70%)' }} />
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-64" style={{ background: 'linear-gradient(to top, rgba(21,101,192,0.10), transparent)' }} />
+      {/* Gold accent top line */}
+      <div className="pointer-events-none absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, #c8a84b, #f0d060, #c8a84b, transparent)' }} />
 
       <div className="relative mx-auto max-w-5xl px-4 md:px-6">
 
