@@ -1224,34 +1224,12 @@ function VanMieuHeritageSection() {
         <div className="relative w-full">
           {/* Main hero image */}
           <img
-            src="/images/giao-lo/hero-wide-v2.png"
-            alt="Giao Lo Dinh Menh — Vinh Ha Long, Thanh Nha Ho, DH Mo Ha Noi"
+            src="/images/giao-lo/hero-3landmarks.png"
+            alt="Giao Lo Dinh Menh — Vinh Ha Long, Cong Pho Hien, Thanh Nha Ho"
             className="w-full h-auto block"
             style={{ objectFit: 'cover' }}
           />
 
-          {/* HOU Logo overlay — positioned at golden ring in image (~40% from left, ~52% from top) */}
-          <div
-            className="absolute flex items-center justify-center"
-            style={{
-              left: '38%',
-              top: '42%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <div className="relative">
-              <div
-                className="rounded-full overflow-hidden border-4 shadow-2xl"
-                style={{ borderColor: '#d4af37', background: 'white', width: 'clamp(60px,8vw,140px)', height: 'clamp(60px,8vw,140px)' }}
-              >
-                <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="w-full h-full object-contain p-1.5" />
-              </div>
-              <div
-                className="absolute inset-0 rounded-full animate-ping"
-                style={{ border: '2px solid rgba(212,175,55,0.40)', animationDuration: '2.5s' }}
-              />
-            </div>
-          </div>
 
           {/* Overlay: Title block at top */}
           <div
@@ -1282,7 +1260,7 @@ function VanMieuHeritageSection() {
           </div>
 
           {/* Label: Thanh Hoa — lower left */}
-          <div className="absolute bottom-[22%] right-[32%]">
+          <div className="absolute bottom-[5%] right-[2%]">
             <div
               className="rounded px-2 py-0.5 md:px-3 md:py-1"
               style={{ background: 'rgba(68,64,60,0.85)', backdropFilter: 'blur(6px)' }}
@@ -1292,33 +1270,20 @@ function VanMieuHeritageSection() {
             </div>
           </div>
 
-          {/* Label: HOU — right side */}
-          <div className="absolute bottom-[8%] right-[2%] text-right">
-            <div
-              className="rounded px-2 py-0.5 md:px-3 md:py-1"
-              style={{ background: 'rgba(30,58,138,0.85)', backdropFilter: 'blur(6px)' }}
-            >
-              <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-blue-200">Hanoi Open University</p>
-              <p className="text-[9px] md:text-xs font-extrabold text-white">Trường ĐH Mở Hà Nội</p>
-            </div>
-          </div>
+          
 
-          {/* HOU Logo — covers the gold medallion in the source image */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ paddingTop: '3%' }}>
-            {/* White circle to mask the gold medallion underneath */}
-            <div style={{ position: 'relative', width: 'clamp(70px, 18vw, 480px)', aspectRatio: '1' }}>
-              <div style={{
-                position: 'absolute', inset: 0, borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(240,235,220,0.92) 55%, transparent 75%)',
-              }} />
-              <img
-                src="/hou.png"
-                alt="Logo Đại học Mở Hà Nội"
-                style={{
-                  position: 'relative', width: '100%', height: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.5))',
-                }}
+          {/* HOU Logo — top-right golden background area */}
+          <div className="absolute" style={{ top: '4%', right: '3%' }}>
+            <div className="relative">
+              <div
+                className="rounded-full overflow-hidden shadow-2xl"
+                style={{ border: '3px solid #d4af37', background: 'rgba(255,252,240,0.95)', width: 'clamp(52px,7vw,130px)', height: 'clamp(52px,7vw,130px)' }}
+              >
+                <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="w-full h-full object-contain p-1" />
+              </div>
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{ border: '2px solid rgba(212,175,55,0.5)', animation: 'ping 2.5s cubic-bezier(0,0,0.2,1) infinite' }}
               />
             </div>
           </div>
