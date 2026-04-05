@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode, type ComponentType } from 'react'
+import ChatWidget from './components/ChatWidget'
 import {
   Landmark, Waves, Wheat, GraduationCap,
   Leaf, ShieldCheck, Truck,
   Brain, Star, PartyPopper,
-  Heart, Phone, MapPin,
+  Heart, Phone,
   Menu as MenuIcon, X as XIcon, Gift,
   ChevronLeft, ChevronRight,
   TrendingUp, Handshake, Rocket, BarChart3,
@@ -335,42 +336,60 @@ function HeroSection() {
 /* ====================================================================
    3 CÔNG CHÚA - LỜI TỰ SỰ TỪ TRÁI TIM
    ==================================================================== */
-const PRINCESS_COLORS: Record<Province, { border: string; shadow: string; hoverBorder: string; hoverShadow: string; glowClass: string }> = {
-  'thanh-hoa': { border: 'border-red-400/60', shadow: 'shadow-red-500/20', hoverBorder: 'group-hover:border-red-300', hoverShadow: 'group-hover:shadow-red-500/40', glowClass: 'glow-red' },
-  'quang-ninh': { border: 'border-cyan-400/60', shadow: 'shadow-cyan-500/20', hoverBorder: 'group-hover:border-cyan-300', hoverShadow: 'group-hover:shadow-cyan-500/40', glowClass: 'glow-cyan' },
-  'hung-yen': { border: 'border-emerald-400/60', shadow: 'shadow-emerald-500/20', hoverBorder: 'group-hover:border-emerald-300', hoverShadow: 'group-hover:shadow-emerald-500/40', glowClass: 'glow-emerald' },
+const PRINCESS_TIMELINE_COLORS: Record<Province, { circle: string; quote: string; dot: string; location: string }> = {
+  'thanh-hoa': { circle: 'bg-rose-200', quote: 'bg-rose-50 border-rose-200', dot: 'bg-rose-400', location: 'text-rose-500' },
+  'quang-ninh': { circle: 'bg-slate-300', quote: 'bg-slate-100 border-slate-200', dot: 'bg-slate-400', location: 'text-slate-500' },
+  'hung-yen': { circle: 'bg-amber-100', quote: 'bg-amber-50 border-amber-200', dot: 'bg-amber-500', location: 'text-amber-600' },
 }
 
 function PrincessesSection() {
   return (
-    <section id="gioi-thieu" className="bg-white py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section id="gioi-thieu" className="bg-stone-100 py-16 md:py-24">
+      <div className="mx-auto max-w-4xl px-4 md:px-6">
         <Reveal direction="zoom">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-amber-600 md:text-4xl">3 Công Chúa: Lời Tự Sự Từ Trái Tim</h2>
-            <p className="mx-auto mt-3 max-w-3xl text-gray-600">Mỗi công chúa là một người kể chuyện, dẫn bạn qua từng miền đất với góc nhìn riêng, giàu cảm xúc và đậm giá trị văn hóa.</p>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-600 text-center">
+              Ba người con gái đại diện cho ba miền đất Việt, mỗi người mang trong mình một câu chuyện riêng về quê hương và di sản.
+            </p>
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-3">
+        {/* Timeline */}
+        <div className="mt-16 relative">
+          {/* Vertical center line */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-amber-800/30 -translate-x-1/2" />
+
           {PRINCESSES.map((p, i) => {
-            const colors = PRINCESS_COLORS[p.id]
-            const dir = (['left', 'up', 'right'] as const)[i]
+            const colors = PRINCESS_TIMELINE_COLORS[p.id]
+            const isLeft = i % 2 === 0
+
             return (
-              <Reveal key={p.id} delay={i * 200} direction={dir}>
-                <article className="group text-center">
-                  <div className={`mx-auto mb-4 h-36 w-36 overflow-hidden rounded-full border-4 ${colors.border} shadow-lg ${colors.shadow} transition ${colors.hoverBorder} ${colors.hoverShadow}`}>
-                    <img src={p.image} alt={p.name} className="h-full w-full object-cover transition group-hover:scale-110" />
+              <Reveal key={p.id} delay={i * 200} direction={isLeft ? 'left' : 'right'}>
+                <div className={`relative flex items-center mb-20 ${!isLeft ? 'flex-row-reverse' : ''}`}>
+                  {/* Circle with photo */}
+                  <div className="w-1/2 flex justify-center relative">
+                    <div className={`h-44 w-44 rounded-full ${colors.circle} overflow-hidden shadow-md`}>
+                      <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
+                    </div>
+                    {/* Dot connector */}
+                    <div className={`absolute top-1/2 ${isLeft ? '-right-1.5' : '-left-1.5'} -translate-y-1/2 w-3 h-3 rounded-full ${colors.dot} z-10`} />
                   </div>
-                  <h3 className="text-lg font-bold text-amber-700">{p.name}</h3>
-                  <p className="text-sm text-amber-500">{p.province}</p>
-                  <div className="mt-3 bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-600 italic leading-relaxed">
-                    {p.quote}
+
+                  {/* Content */}
+                  <div className={`w-1/2 ${isLeft ? 'pl-10' : 'pr-10'}`}>
+                    <h3 className="text-xl font-bold text-gray-800">{p.name}</h3>
+                    <p className={`text-xs mt-0.5 flex items-center gap-1 ${colors.location}`}>
+                      <MapPin size={11} /> {p.province}
+                    </p>
+                    <div className={`mt-3 rounded-xl border p-4 text-sm text-gray-600 italic leading-relaxed ${colors.quote}`}>
+                      <Heart size={12} className="inline mr-1 opacity-60" />{p.quote}
+                    </div>
+                    <a href={`#${p.id}`} className="mt-3 inline-flex px-5 py-2 text-sm font-semibold text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition">
+                      Xem quê hương tôi
+                    </a>
                   </div>
-                  <a href={`#${p.id}`} className={`mt-4 inline-flex cta-glow-border ${colors.glowClass} px-4 py-2 text-sm font-medium text-amber-600 rounded-lg hover:bg-amber-50 transition`}>
-                    Xem quê hương tôi
-                  </a>
-                </article>
+                </div>
               </Reveal>
             )
           })}
@@ -431,7 +450,7 @@ function ThanhHoaSection() {
                 <div key={item.title} className={`h-accordion-item ${i === accActive ? 'active' : ''}`} onClick={() => setAccActive(i)}>
                   {i === 1 && accActive === 1 && item.hasVideo ? (
                     <video autoPlay loop muted playsInline className="acc-bg" style={{ objectFit: 'cover' }}>
-                      <source src="/vid-bie-sam-son.mov" type="video/mp4" />
+                      <source src="/vid-bie-sam-son.mp4" type="video/mp4" />
                     </video>
                   ) : (
                     <img src={item.image} alt={item.title} className="acc-bg" />
@@ -1169,6 +1188,7 @@ export default function App() {
       <VanMieuHeritageSection />
       <DaiHocMoSection />
       <Footer />
+      <ChatWidget />
     </div>
   )
 }
