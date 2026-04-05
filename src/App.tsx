@@ -458,7 +458,7 @@ function ThanhHoaSection() {
 
         {/* Page 2: Quiz "Thử tài sử học nhí" */}
         {page === 1 && (
-          <Reveal>
+          <Reveal direction="right">
             <div className="glass-dark rounded-2xl p-6 md:p-8">
               <h3 className="text-xl font-bold text-amber-200 flex items-center gap-2"><Brain className="h-6 w-6" /> Thử tài sử học nhí</h3>
               <p className="mt-2 text-sm text-white/60">Trả lời các câu hỏi để khám phá thêm về lịch sử xứ Thanh!</p>
