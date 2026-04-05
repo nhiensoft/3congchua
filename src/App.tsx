@@ -222,8 +222,8 @@ function Reveal({ children, className = '', delay = 0, direction = 'up' }: { chi
   const transforms: Record<string, string> = {
     up: 'translateY(60px)',
     down: 'translateY(-40px)',
-    left: 'translateX(-80px)',
-    right: 'translateX(80px)',
+    left: 'translateX(-40px)',
+    right: 'translateX(40px)',
     zoom: 'scale(0.85)',
   }
   return (
@@ -561,7 +561,7 @@ function Header() {
    ==================================================================== */
 function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden w-full">
       {/* Video background */}
       <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover z-0">
         <source src="/3-di-san.mp4" type="video/mp4" />
@@ -570,29 +570,52 @@ function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 via-transparent to-black/40 z-[2]" />
 
       {/* Content */}
-      <div className="relative z-[3] text-center px-6 w-full max-w-5xl mx-auto mt-16">
+      <div className="relative z-[3] text-center w-full max-w-5xl mx-auto mt-16 px-6" style={{ boxSizing: 'border-box' }}>
         <Reveal direction="down">
-          <h1 className="gradient-title text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-tight" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, lineHeight: '1.1' }}>
+          <h1
+            className="gradient-title font-black leading-tight"
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 900,
+              fontSize: 'clamp(1.6rem, 10vw, 6rem)',
+              lineHeight: 1.15,
+              wordBreak: 'keep-all',
+              overflowWrap: 'break-word',
+            }}
+          >
             Vọng Âm Quá Khứ
           </h1>
         </Reveal>
-        <Reveal delay={200} direction="left">
-          <p className="mt-3 text-base sm:text-xl md:text-3xl lg:text-4xl font-bold text-white" style={{ textShadow: '0 0 10px rgba(245,197,66,0.6), 0 0 20px rgba(245,197,66,0.4), 0 0 40px rgba(245,197,66,0.25), 0 2px 8px rgba(0,0,0,0.35)' }}>
+        <Reveal delay={200} direction="up">
+          <p
+            className="mt-3 font-bold text-white leading-snug"
+            style={{ fontSize: 'clamp(0.95rem, 4vw, 2.25rem)', textShadow: '0 0 10px rgba(245,197,66,0.6), 0 2px 8px rgba(0,0,0,0.35)' }}
+          >
             Hành Trình Di Sản Của 3 Công Chúa
           </p>
         </Reveal>
-        <Reveal delay={400} direction="right">
-          <p className="mt-4 text-sm sm:text-lg md:text-2xl font-medium text-white/95" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.45)' }}>
+        <Reveal delay={400} direction="up">
+          <p
+            className="mt-3 font-medium text-white/95 leading-relaxed"
+            style={{ fontSize: 'clamp(0.8rem, 3vw, 1.5rem)', textShadow: '0 1px 6px rgba(0,0,0,0.45)' }}
+          >
             Nơi Dấu Ấn Ba Miền Thăng Hoa, Tri Thức Kiến Tạo Tương Lai
           </p>
         </Reveal>
         <Reveal delay={600} direction="zoom">
-          <p className="mt-3 text-xs sm:text-sm md:text-base text-white/85 max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+          <p
+            className="mt-3 text-white/85 max-w-2xl mx-auto leading-relaxed"
+            style={{ fontSize: 'clamp(0.75rem, 2.5vw, 1rem)', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}
+          >
             Cùng 3 Công Chúa dấn thân vào một hành trình khám phá những câu chuyện từ ngàn xưa, những giá trị văn hóa bất diệt và ước mơ kiến tạo tương lai
           </p>
         </Reveal>
         <Reveal delay={800}>
-          <a href="#gioi-thieu" className="btn-shine mt-8 inline-flex rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-3 sm:px-8 sm:py-4 font-bold text-white text-sm sm:text-base shadow-lg shadow-amber-500/25 transition hover:shadow-amber-500/40 hover:scale-105">
+          <a
+            href="#gioi-thieu"
+            className="btn-shine mt-8 inline-flex rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-3 sm:px-8 sm:py-4 font-bold text-white text-sm sm:text-base shadow-lg shadow-amber-500/25 transition hover:shadow-amber-500/40 hover:scale-105"
+            style={{ maxWidth: '100%' }}
+          >
             Bắt Đầu Hành Trình Khám Phá Ngay
           </a>
         </Reveal>
@@ -1199,7 +1222,7 @@ function VanMieuHeritageSection() {
         <div className="relative w-full">
           {/* Main hero image */}
           <img
-            src="/images/giao-lo/hero-final.png"
+            src="/images/giao-lo/hero-wide-final.png"
             alt="Giao Lo Dinh Menh — Vinh Ha Long, Thanh Nha Ho, DH Mo Ha Noi"
             className="w-full h-auto block"
             style={{ objectFit: 'cover' }}
@@ -1223,7 +1246,7 @@ function VanMieuHeritageSection() {
           </div>
 
           {/* Label: Quang Ninh — upper left */}
-          <div className="absolute top-[22%] left-[3%]">
+          <div className="absolute top-[18%] left-[2%]">
             <div
               className="rounded px-2 py-0.5 md:px-3 md:py-1"
               style={{ background: 'rgba(13,148,136,0.82)', backdropFilter: 'blur(6px)' }}
@@ -1234,7 +1257,7 @@ function VanMieuHeritageSection() {
           </div>
 
           {/* Label: Thanh Hoa — lower left */}
-          <div className="absolute bottom-[28%] left-[3%]">
+          <div className="absolute bottom-[22%] right-[32%]">
             <div
               className="rounded px-2 py-0.5 md:px-3 md:py-1"
               style={{ background: 'rgba(68,64,60,0.85)', backdropFilter: 'blur(6px)' }}
@@ -1245,7 +1268,7 @@ function VanMieuHeritageSection() {
           </div>
 
           {/* Label: HOU — right side */}
-          <div className="absolute bottom-[20%] right-[2%] text-right">
+          <div className="absolute bottom-[8%] right-[2%] text-right">
             <div
               className="rounded px-2 py-0.5 md:px-3 md:py-1"
               style={{ background: 'rgba(30,58,138,0.85)', backdropFilter: 'blur(6px)' }}
