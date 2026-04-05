@@ -177,6 +177,43 @@ function useSideNavVisible() {
   return show
 }
 
+function useScrollTabs(count: number) {
+  const [page, setPage] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+  const pageRef = useRef(0)
+  const lockedRef = useRef(false)
+
+  useEffect(() => { pageRef.current = page }, [page])
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      const section = sectionRef.current
+      if (!section || lockedRef.current) return
+      const rect = section.getBoundingClientRect()
+      // Section is "active" when its top is near/above viewport top and bottom is still visible
+      const active = rect.top <= 80 && rect.bottom >= window.innerHeight * 0.5
+      if (!active) return
+
+      if (e.deltaY > 0 && pageRef.current < count - 1) {
+        e.preventDefault()
+        lockedRef.current = true
+        setPage(p => Math.min(count - 1, p + 1))
+        setTimeout(() => { lockedRef.current = false }, 750)
+      } else if (e.deltaY < 0 && pageRef.current > 0) {
+        e.preventDefault()
+        lockedRef.current = true
+        setPage(p => Math.max(0, p - 1))
+        setTimeout(() => { lockedRef.current = false }, 750)
+      }
+    }
+
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    return () => window.removeEventListener('wheel', handleWheel)
+  }, [count])
+
+  return { page, setPage, sectionRef }
+}
+
 /* ====================================================================
    SHARED COMPONENTS
    ==================================================================== */
