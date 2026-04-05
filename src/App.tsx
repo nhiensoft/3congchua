@@ -765,7 +765,7 @@ function HungYenSection() {
   const stepLabels = ['Phố Hiến nàng thơ', 'Vườn nhãn cổ thụ', 'Long nhãn tiến vua']
 
   return (
-    <section id="hung-yen" className="py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #065f46 0%, #047857 30%, #065f46 50%, #78350f 80%, #92400e 100%)' }}>
+    <section id="hung-yen" className="py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(to bottom, #065f46 0%, #047857 30%, #065f46 55%, #9a8530 80%, #e8cf78 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <Reveal direction="left">
           <div className="text-center mb-8">
@@ -889,34 +889,34 @@ const NGU_MO = [
 
 function VanMieuHeritageSection() {
   return (
-    <section id="giao-lo-dinh-menh" className="relative py-20 md:py-28 overflow-hidden" style={{ background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' }}>
-      {/* Library background with parallax blur */}
+    <section id="giao-lo-dinh-menh" className="relative py-20 md:py-28 overflow-hidden" style={{ background: 'linear-gradient(160deg, #FFFDF7 0%, #FFF8E7 40%, #FFFBF0 100%)' }}>
+      {/* Subtle warm top accent */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-900/90 z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-50/40 via-transparent to-amber-50/20 z-[1]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-6">
 
         {/* Logo ĐH Mở ở góc trái */}
         <div className="absolute top-6 left-6 md:left-10 z-20">
-          <img src="/images/logo-dh-mo-white.png" alt="Logo ĐH Mở" className="h-12 w-12 md:h-16 md:w-16 rounded-full object-contain bg-white/10 backdrop-blur p-1 border border-amber-400/30" />
+          <img src="/images/logo-dh-mo-white.png" alt="Logo ĐH Mở" className="h-12 w-12 md:h-16 md:w-16 rounded-full object-contain bg-white/80 backdrop-blur p-1 border border-amber-400/50 shadow-md" />
         </div>
 
         {/* Title */}
         <Reveal direction="zoom">
           <div className="text-center mb-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-amber-400/80 mb-2">Essence of the Nation</p>
-            <h2 className="text-3xl font-extrabold text-white md:text-5xl" style={{ textShadow: '0 0 30px rgba(212,175,55,0.3)' }}>
+            <p className="text-xs uppercase tracking-[0.3em] text-amber-600 mb-2">Essence of the Nation</p>
+            <h2 className="text-3xl font-extrabold text-slate-800 md:text-5xl" style={{ textShadow: '0 2px 12px rgba(180,130,40,0.15)' }}>
               GIAO LỘ ĐỊNH MỆNH
             </h2>
-            <p className="mt-2 text-sm uppercase tracking-[0.2em] text-amber-300/70">Khi những dòng chảy hội tụ về đại dương tri thức</p>
+            <p className="mt-2 text-sm uppercase tracking-[0.2em] text-amber-700/80">Khi những dòng chảy hội tụ về đại dương tri thức</p>
           </div>
         </Reveal>
 
         {/* Description in glass card */}
         <Reveal delay={100} direction="left">
-          <div className="glass-dark rounded-2xl mt-6 p-6 text-center mb-12 max-w-3xl mx-auto">
-            <p className="text-sm text-white/80 leading-relaxed">
+          <div className="rounded-2xl mt-6 p-6 text-center mb-12 max-w-3xl mx-auto border border-amber-200/60 shadow-md" style={{ background: 'rgba(255,255,255,0.75)', backdropFilter: 'blur(12px)' }}>
+            <p className="text-sm text-slate-700 leading-relaxed">
               Mang theo sự kiên cường của đất học Thanh Hóa, sức sống khoáng đạt của biển bạc Quảng Ninh, hay nét tinh tế từ phù sa Hưng Yên; định mệnh đã đưa ba tâm hồn đồng điệu gặp gỡ. Chúng mình không chỉ mang theo niềm tự hào quê hương, mà còn mang cả khát khao chinh phục những tầm cao mới, đem tri thức về xây dựng quê hương.
             </p>
           </div>
@@ -947,8 +947,8 @@ function VanMieuHeritageSection() {
         {/* ĐH Mở - Khoa Kinh Tế header */}
         <Reveal delay={200} direction="right">
           <div className="text-center mb-8">
-            <p className="text-xs uppercase tracking-[0.3em] text-amber-400/60">Đại Học Mở Hà Nội — Khoa Kinh Tế</p>
-            <h3 className="text-2xl font-extrabold text-amber-300 md:text-4xl mt-2" style={{ textShadow: '0 0 20px rgba(212,175,55,0.3)' }}>
+            <p className="text-xs uppercase tracking-[0.3em] text-amber-600 mb-2">Đại Học Mở Hà Nội — Khoa Kinh Tế</p>
+            <h3 className="text-2xl font-extrabold text-amber-700 md:text-4xl mt-2" style={{ textShadow: '0 2px 12px rgba(180,130,40,0.15)' }}>
               NGŨ MỞ
             </h3>
           </div>
@@ -958,10 +958,10 @@ function VanMieuHeritageSection() {
         <Reveal delay={300} direction="up">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-5 md:gap-5">
             {NGU_MO.map((item, i) => (
-              <div key={item.title} className="float-card glass-dark rounded-2xl p-5 text-center group hover:bg-white/10 transition-all duration-300" style={{ animationDelay: `${i * 0.3}s` }}>
+              <div key={item.title} className="float-card rounded-2xl p-5 text-center group transition-all duration-300 border border-amber-200/60 hover:border-amber-400/60 hover:shadow-lg hover:shadow-amber-100/80" style={{ animationDelay: `${i * 0.3}s`, background: 'rgba(255,255,255,0.80)', backdropFilter: 'blur(10px)' }}>
                 <div className="text-3xl mb-3 md:text-4xl">{item.icon}</div>
-                <h4 className="text-sm font-bold text-amber-300 md:text-base">{item.title}</h4>
-                <p className="mt-2 text-[11px] text-white/60 leading-relaxed md:text-xs">{item.desc}</p>
+                <h4 className="text-sm font-bold text-amber-700 md:text-base">{item.title}</h4>
+                <p className="mt-2 text-[11px] text-slate-600 leading-relaxed md:text-xs">{item.desc}</p>
               </div>
             ))}
           </div>
