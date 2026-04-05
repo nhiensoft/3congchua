@@ -4,10 +4,11 @@ import {
   Landmark, Waves, Wheat, GraduationCap,
   Leaf, ShieldCheck, Truck,
   Brain, Star, PartyPopper,
-  Heart, Phone,
+  Heart, Phone, MapPin,
   Menu as MenuIcon, X as XIcon, Gift,
   ChevronLeft, ChevronRight,
-  TrendingUp, Handshake, Rocket, BarChart3,
+  TrendingUp,
+  Play, Award, Users, Trophy,
   type LucideProps,
 } from 'lucide-react'
 
@@ -614,24 +615,40 @@ function QuangNinhSection() {
             <div className="glass-dark rounded-2xl overflow-hidden">
               <div className="relative h-[400px] md:h-[500px]">
                 <img src="/images/ban-do-bien-qn.png" alt="Bản đồ biển Quảng Ninh" className="w-full h-full object-cover" />
+                {selectedIsland && (
+                  <div className="absolute inset-0 z-10" onClick={() => setSelectedIsland(null)} />
+                )}
                 {islands.map(p => (
-                  <button key={p.id} onClick={() => setSelectedIsland(p.id)} className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-all ${selectedIsland === p.id ? 'border-amber-300 bg-amber-400 scale-125' : 'border-white bg-amber-500 hover:scale-110'} px-3 py-1.5 text-xs font-bold text-white shadow-lg`} style={{ left: p.x, top: p.y }}>
-                    {p.name}
-                  </button>
+                  <div key={p.id} className="absolute z-20" style={{ left: p.x, top: p.y, transform: 'translate(-50%, -50%)' }}>
+                    <button
+                      onClick={() => setSelectedIsland(selectedIsland === p.id ? null : p.id)}
+                      className={`rounded-full border-2 transition-all px-3 py-1.5 text-xs font-bold text-white shadow-lg ${selectedIsland === p.id ? 'border-amber-300 bg-amber-400 scale-125' : 'border-white bg-amber-500 hover:scale-110'}`}
+                    >
+                      {p.name}
+                    </button>
+                    {selectedIsland === p.id && (() => {
+                      const island = islands.find(i => i.id === selectedIsland)!
+                      return (
+                        <div
+                          className="absolute z-30 bottom-full mb-3 left-1/2 w-60 rounded-xl shadow-2xl overflow-hidden"
+                          style={{ transform: 'translateX(-50%)', background: 'rgba(7,89,133,0.97)', border: '1.5px solid rgba(125,211,252,0.4)' }}
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <button
+                            onClick={() => setSelectedIsland(null)}
+                            className="absolute top-2 right-2 text-white/60 hover:text-white text-base leading-none z-10"
+                          >✕</button>
+                          <img src={island.image} alt={island.name} className="w-full h-28 object-cover" />
+                          <div className="p-3">
+                            <h3 className="text-sm font-bold text-cyan-200">{island.name}</h3>
+                            <p className="mt-1 text-xs text-white/80 leading-relaxed">{island.text}</p>
+                          </div>
+                        </div>
+                      )
+                    })()}
+                  </div>
                 ))}
               </div>
-              {selectedIsland && (() => {
-                const island = islands.find(i => i.id === selectedIsland)!
-                return (
-                  <div className="p-5 flex flex-col md:flex-row gap-4 items-center">
-                    <img src={island.image} alt={island.name} className="w-full md:w-64 h-40 rounded-xl object-cover" />
-                    <div>
-                      <h3 className="text-lg font-bold text-cyan-200">{island.name}</h3>
-                      <p className="mt-2 text-sm text-white/80">{island.text}</p>
-                    </div>
-                  </div>
-                )
-              })()}
             </div>
           </Reveal>
         )}
@@ -958,164 +975,146 @@ function VanMieuHeritageSection() {
 /* ====================================================================
    ĐẠI HỌC MỞ HÀ NỘI — EXPANDED
    ==================================================================== */
-const HOU_STATS = [
-  { value: '32', label: 'Năm', sub: 'hình thành & phát triển' },
-  { value: '5', label: 'Ngành', sub: 'đào tạo chuyên sâu' },
-  { value: '35.000+', label: 'Sinh viên', sub: 'đang theo học' },
-  { value: '~95%', label: 'Có việc làm', sub: 'sau tốt nghiệp' },
-  { value: '79', label: 'Trạm', sub: 'đào tạo từ xa' },
-]
-
-const KHOA_KT_TABS = [
-  {
-    title: 'Quá trình hình thành',
-    content: 'Được thành lập ngày 01/12/1993 theo quyết định của Bộ trưởng Bộ Giáo dục và Đào tạo, Khoa Kinh tế — Trường Đại học Mở Hà Nội là một đơn vị đào tạo có bề dày truyền thống với các hệ đào tạo đa dạng: ngành Kế toán, Quản trị kinh doanh và Thương mại điện tử.',
-  },
-  {
-    title: 'Thành công vượt trội',
-    content: 'Hành trình 32 năm mở, hội nhập và lan tỏa nổi bật với nhiều thành tích: Nhiều năm liên tục đạt danh hiệu Tập thể lao động xuất sắc của Chính phủ, Bằng khen của Thủ tướng vì nhiều thành tích trong đào tạo và NCKH, và nhiều bằng khen của Bộ trưởng Bộ GD&ĐT.',
-  },
-  {
-    title: 'Chương trình đào tạo',
-    content: 'Khoa đang quản lý 05 chương trình đào tạo: 03 bậc đại học (Kế toán, Quản trị kinh doanh, Thương mại điện tử) và 02 bậc thạc sĩ (Kế toán, Quản trị kinh doanh) với hơn 3.000 học viên, sinh viên đang theo học.',
-  },
-  {
-    title: 'Hoạt động Văn – Thể – Mỹ',
-    content: 'Khoa luôn coi trọng phát triển câu lạc bộ sinh viên: Econ Club, CLB TMĐT, CLB Kế toán, CLB Thể thao – Võ thuật. Thường xuyên tổ chức các cuộc thi Khởi nghiệp, Tài năng kinh doanh số, Tài năng kế toán, Olympic tiếng Anh, giải bóng đá nam-nữ.',
-  },
-]
 
 function DaiHocMoSection() {
-  const [activeTab, setActiveTab] = useState(0)
-
   return (
-    <section id="dai-hoc-mo" className="py-14 md:py-20" style={{ background: 'linear-gradient(180deg, #fef3c7 0%, #fffbeb 30%, #ffffff 100%)' }}>
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
+    <section id="dai-hoc-mo" className="py-14 md:py-20 text-white" style={{ background: 'linear-gradient(160deg, #4a5568 0%, #5a6a7e 40%, #6b7a8d 100%)' }}>
+      <div className="mx-auto max-w-5xl px-4 md:px-6">
 
         {/* Title */}
         <Reveal direction="zoom">
           <div className="text-center mb-10">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <img src="/images/logo-dh-mo.png" alt="Logo ĐH Mở" className="h-14 w-14 rounded-full object-contain bg-white p-1 border-2 border-amber-400/50" />
-            </div>
-            <h2 className="text-2xl font-extrabold text-gray-900 md:text-4xl">
-              TRƯỜNG ĐẠI HỌC MỞ HÀ NỘI
+            <h2 className="text-3xl font-bold md:text-5xl" style={{ fontFamily: 'Georgia, serif' }}>
+              Đại học Mở Hà Nội
             </h2>
-            <p className="mt-1 text-lg font-semibold text-amber-600">
-              Viết Tiếp Chương Mới Của Trí Tuệ Việt
+            <p className="mt-2 text-base font-semibold text-white/80">
+              Nơi Tri Thức Bay Cao, Kiến Tạo Tương Lai
             </p>
-            <p className="mt-3 mx-auto max-w-2xl text-sm text-gray-600 leading-relaxed">
-              Đại học Mở Hà Nội là cơ sở giáo dục đại học công lập đa ngành, định hướng mở rộng cơ hội học tập, phát triển năng lực thực tiễn và hội nhập.
+            <p className="mt-1 text-sm text-white/60">
+              Nơi tri thức bay cao, kiến tạo tương lai với chất lượng giáo dục hàng đầu
             </p>
           </div>
         </Reveal>
 
-        {/* Stats */}
+        {/* Khám Phá Card */}
         <Reveal delay={100} direction="up">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-5 mb-12">
-            {HOU_STATS.map(s => (
-              <div key={s.label} className="counter-card rounded-xl p-4 text-center">
-                <p className="text-2xl font-extrabold text-amber-600 md:text-3xl">{s.value}</p>
-                <p className="text-sm font-semibold text-gray-800 mt-1">{s.label}</p>
-                <p className="text-[10px] text-gray-500 mt-0.5">{s.sub}</p>
+          <div className="rounded-2xl overflow-hidden mb-6" style={{ background: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Left */}
+              <div className="p-6 md:p-8">
+                <h3 className="text-lg font-bold text-amber-300 mb-3">Khám Phá Đại Học Mở Hà Nội</h3>
+                <p className="text-sm text-white/75 leading-relaxed mb-5">
+                  Với hơn 30 năm kinh nghiệm trong lĩnh vực giáo dục, Đại học Mở Hà Nội đã khẳng định vị thế là một trong những trường đại học uy tín hàng đầu Việt Nam.
+                </p>
+                <ul className="space-y-2 text-sm text-white/85">
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
+                    Hơn 50,000 sinh viên đang theo học
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
+                    Top 15 trường đại học hàng đầu Việt Nam
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
+                    95% sinh viên có việc làm sau tốt nghiệp
+                  </li>
+                </ul>
+              </div>
+              {/* Right — video placeholder */}
+              <div className="relative flex items-center justify-center" style={{ background: 'rgba(180,160,80,0.25)', minHeight: '200px' }}>
+                <button
+                  className="flex items-center justify-center h-16 w-16 rounded-full bg-amber-400 hover:bg-amber-300 transition shadow-lg"
+                  aria-label="Xem video giới thiệu"
+                >
+                  <Play className="h-7 w-7 text-slate-900 ml-1" />
+                </button>
+                <p className="absolute bottom-3 left-0 right-0 text-center text-xs text-white/60">Giới thiệu Đại học Mở Hà Nội</p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* 4 Stats */}
+        <Reveal delay={150} direction="up">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 mb-6">
+            {[
+              { Icon: Award, value: '30+', label: 'Năm kinh nghiệm' },
+              { Icon: TrendingUp, value: '95%', label: 'Tỉ lệ việc làm' },
+              { Icon: Users, value: '100+', label: 'Giảng viên chất lượng' },
+              { Icon: Trophy, value: 'Top 5', label: 'Khoa Kinh Tế hàng đầu' },
+            ].map(s => (
+              <div key={s.label} className="rounded-xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                <s.Icon className="h-7 w-7 mx-auto mb-2 text-amber-300" />
+                <p className="text-2xl font-extrabold text-white">{s.value}</p>
+                <p className="text-xs text-white/65 mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
         </Reveal>
 
-        {/* Khoa Kinh tế */}
-        <Reveal delay={200} direction="left">
-          <div id="khoa-kinh-te" className="rounded-2xl border border-amber-200 bg-white/80 backdrop-blur shadow-lg overflow-hidden">
-            <div className="p-6 md:p-8">
-              <h3 className="text-xl font-extrabold text-gray-900 md:text-2xl">KHOA KINH TẾ, TRƯỜNG ĐẠI HỌC MỞ HÀ NỘI</h3>
-              <p className="mt-1 text-sm text-amber-600">Kiến tạo tương lai</p>
-            </div>
-
-            {/* Tabs */}
-            <div className="flex flex-wrap border-t border-amber-200">
-              {KHOA_KT_TABS.map((tab, i) => (
-                <button
-                  key={tab.title}
-                  onClick={() => setActiveTab(i)}
-                  className={`flex-1 min-w-[140px] px-4 py-3 text-xs font-semibold transition cursor-pointer ${
-                    activeTab === i
-                      ? 'bg-amber-100 text-amber-700 border-b-2 border-amber-500'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {tab.title}
-                </button>
-              ))}
-            </div>
-
-            <div className="p-6 md:p-8">
-              <p className="text-sm text-gray-700 leading-relaxed">{KHOA_KT_TABS[activeTab].content}</p>
-            </div>
-
-            {/* NGŨ MỞ */}
-            <div className="border-t border-amber-200 p-6 md:p-8">
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-amber-700 mb-3">5 chữ MỞ</h4>
-              <div className="flex flex-wrap gap-2">
-                {['Mở cơ hội', 'Mở trí tuệ', 'Mở trái tim', 'Mở tầm nhìn', 'Mở tương lai'].map(v => (
-                  <span key={v} className="rounded-full border border-amber-400/50 bg-amber-100 px-3 py-1 text-xs text-amber-700">{v}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Cơ hội nghề nghiệp */}
-        <Reveal delay={250} direction="right">
-          <div className="mt-8">
-            <h3 className="text-xl font-bold text-amber-700 text-center mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-              Cơ Hội Nghề Nghiệp
+        {/* Khoa Kinh Tế section */}
+        <Reveal delay={200} direction="up">
+          <div className="rounded-2xl p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <h3 className="text-center text-xl font-bold text-amber-300 mb-6 md:text-2xl">
+              Khoa Kinh Tế – Ươm Mầm Tài Năng Tương Lai
             </h3>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                { title: 'Quản lý cấp cao', desc: 'Vị trí lãnh đạo tại các tập đoàn, doanh nghiệp lớn trong và ngoài nước.', Icon: TrendingUp },
-                { title: 'Chuyên gia tư vấn', desc: 'Tư vấn chiến lược kinh doanh, tài chính, đầu tư cho doanh nghiệp.', Icon: Handshake },
-                { title: 'Khởi nghiệp', desc: 'Xây dựng và phát triển doanh nghiệp riêng với nền tảng kiến thức vững chắc.', Icon: Rocket },
-                { title: 'Phân tích tài chính', desc: 'Phân tích, đánh giá và dự báo tình hình tài chính doanh nghiệp.', Icon: BarChart3 },
-              ].map(item => (
-                <div key={item.title} className="career-card bg-white rounded-xl p-5 shadow-md">
-                  <item.Icon className="h-8 w-8 text-amber-600 mb-3" />
-                  <h4 className="text-lg font-bold text-amber-700">{item.title}</h4>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Chuyên ngành */}
+              <div>
+                <h4 className="flex items-center gap-2 text-sm font-bold text-white mb-3">
+                  <span className="h-2 w-2 rounded-full bg-amber-400" />
+                  Chuyên Ngành Nổi Bật
+                </h4>
+                <ul className="space-y-2 text-sm text-white/80">
+                  {['Quản trị Kinh doanh', 'Kế toán - Kiểm toán', 'Tài chính - Ngân hàng', 'Marketing & Thương mại điện tử'].map(item => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* Cơ hội nghề nghiệp */}
+              <div>
+                <h4 className="flex items-center gap-2 text-sm font-bold text-white mb-3">
+                  <span className="h-2 w-2 rounded-full bg-teal-400" />
+                  Cơ Hội Nghề Nghiệp
+                </h4>
+                <ul className="space-y-2 text-sm text-white/80">
+                  {['Quản lý cấp cao tại các tập đoàn', 'Chuyên gia tư vấn kinh doanh', 'Khởi nghiệp startup thành công', 'Chuyên gia phân tích tài chính'].map(item => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-teal-400/70 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </Reveal>
 
-        {/* 2 ô clickable */}
-        <Reveal delay={300} direction="up">
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <a
-              href="#lien-he"
-              className="bg-white shadow-md border border-gray-200 rounded-xl group flex items-center gap-4 p-5 transition hover:shadow-lg"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-100">
-                <Heart className="h-6 w-6 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-amber-700 group-hover:text-amber-600">Gửi câu hỏi cho chúng tôi</p>
-                <p className="text-xs text-gray-500">Liên hệ trực tiếp với đội ngũ dự án</p>
-              </div>
-            </a>
-            <a
-              href="https://tuyensinh.hou.edu.vn/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white shadow-md border border-gray-200 rounded-xl group flex items-center gap-4 p-5 transition hover:shadow-lg"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-100">
-                <GraduationCap className="h-6 w-6 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-emerald-700 group-hover:text-emerald-600">Tuyển sinh</p>
-                <p className="text-xs text-gray-500">Tìm hiểu thông tin tuyển sinh tại tuyensinh.hou.edu.vn</p>
-              </div>
-            </a>
+        {/* CTA */}
+        <Reveal delay={250} direction="up">
+          <div className="mt-8 text-center">
+            <p className="text-sm font-semibold text-white/80 mb-4">Cùng Khám Phá Cơ Hội Vàng Tại Khoa Kinh Tế!</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a
+                href="https://tuyensinh.hou.edu.vn/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full px-6 py-2.5 text-sm font-bold text-slate-900 transition hover:opacity-90"
+                style={{ background: 'linear-gradient(90deg, #f59e0b, #d97706)' }}
+              >
+                Đăng Ký Tư Vấn Tuyển Sinh
+              </a>
+              <a
+                href="#lien-he"
+                className="rounded-full px-6 py-2.5 text-sm font-bold text-white border border-white/40 transition hover:bg-white/10"
+              >
+                Tiếp Tục Hành Trình
+              </a>
+            </div>
           </div>
         </Reveal>
 
