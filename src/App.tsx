@@ -1224,7 +1224,7 @@ function VanMieuHeritageSection() {
         <div className="relative w-full">
           {/* Main hero image */}
           <img
-            src="/images/giao-lo/hero-wide-final.png"
+            src="/images/giao-lo/hero-wide-v2.png"
             alt="Giao Lo Dinh Menh — Vinh Ha Long, Thanh Nha Ho, DH Mo Ha Noi"
             className="w-full h-auto block"
             style={{ objectFit: 'cover' }}
@@ -1372,10 +1372,12 @@ function VanMieuHeritageSection() {
 }
 
 
+
+
 /* ====================================================================
-   CAMPUS 360 VIEWER
+   GARDEN 360 VIEWER — Vuon Nhan Co Thu
    ==================================================================== */
-function Campus360Viewer() {
+function Garden360Viewer() {
   const containerRef = useRef<HTMLDivElement>(null)
   const viewerRef = useRef<PSViewer | null>(null)
   const [, setLoaded] = useState(false)
@@ -1383,7 +1385,6 @@ function Campus360Viewer() {
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
-    // Init PSViewer only when scrolled into view (after Reveal opacity:0 → 1)
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !viewerRef.current) {
@@ -1391,7 +1392,7 @@ function Campus360Viewer() {
             if (!containerRef.current || viewerRef.current) return
             viewerRef.current = new PSViewer({
               container: containerRef.current,
-              panorama: '/images/campus-360-eq.png',
+              panorama: '/images/vuon-nhan-360-eq.jpg',
               defaultYaw: 0,
               defaultPitch: 0,
               defaultZoomLvl: 50,
@@ -1414,14 +1415,119 @@ function Campus360Viewer() {
     }
   }, [])
 
-    return (
-    <div className="relative overflow-hidden rounded-2xl shadow-2xl" style={{ border: '1px solid rgba(255,255,255,0.2)' }}>
-      <div ref={containerRef} style={{ width: '100%', height: '420px' }} />
+  return (
+    <div className="relative overflow-hidden rounded-2xl shadow-2xl" style={{ border: '2px solid rgba(196,131,0,0.4)' }}>
+      <div ref={containerRef} style={{ width: '100%', height: '380px' }} />
       <div
         className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-white/80 flex items-center gap-1.5"
-        style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)', fontSize: '10px' }}
+        style={{ background: 'rgba(120,53,15,0.70)', backdropFilter: 'blur(8px)', fontSize: '10px', whiteSpace: 'nowrap' }}
       >
         <span>🖱️</span>
+        <span>Keo de xoay 360 do</span>
+      </div>
+    </div>
+  )
+}
+
+/* ====================================================================
+   CAMPUS 360 VIEWER
+   ==================================================================== */
+function Campus360Viewer() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const viewerRef = useRef<PSViewer | null>(null)
+  const [isReady, setIsReady] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !viewerRef.current) {
+          setIsLoading(true)
+          setTimeout(() => {
+            if (!containerRef.current || viewerRef.current) return
+            const viewer = new PSViewer({
+              container: containerRef.current,
+              panorama: '/images/campus-360-eq-new.jpg',
+              defaultYaw: 0,
+              defaultPitch: -0.05,
+              defaultZoomLvl: 40,
+              touchmoveTwoFingers: false,
+              mousewheelCtrlKey: false,
+              navbar: ['zoom', 'fullscreen'],
+              loadingImg: undefined,
+            })
+            viewerRef.current = viewer
+
+            viewer.addEventListener('ready', () => {
+              setIsReady(true)
+              setIsLoading(false)
+              // Auto-rotate slowly
+              autoRotateRef.current = setInterval(() => {
+                if (!viewerRef.current) return
+                const pos = viewerRef.current.getPosition()
+                viewerRef.current.rotate({ yaw: pos.yaw + 0.003, pitch: pos.pitch })
+              }, 30)
+            })
+
+            viewer.addEventListener('before-render', () => {
+              // Stop auto-rotate on user interaction
+            })
+          }, 600)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15 }
+    )
+    observer.observe(el)
+
+    return () => {
+      observer.disconnect()
+      if (autoRotateRef.current) clearInterval(autoRotateRef.current)
+      viewerRef.current?.destroy()
+      viewerRef.current = null
+    }
+  }, [])
+
+  // Pause auto-rotate on mouse enter, resume on leave
+  const pauseRotate = () => { if (autoRotateRef.current) { clearInterval(autoRotateRef.current); autoRotateRef.current = null } }
+  const resumeRotate = () => {
+    if (autoRotateRef.current || !viewerRef.current) return
+    autoRotateRef.current = setInterval(() => {
+      if (!viewerRef.current) return
+      const pos = viewerRef.current.getPosition()
+      viewerRef.current.rotate({ yaw: pos.yaw + 0.003, pitch: pos.pitch })
+    }, 30)
+  }
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-2xl shadow-2xl cursor-grab active:cursor-grabbing"
+      style={{ border: '1px solid rgba(255,255,255,0.25)' }}
+      onMouseEnter={pauseRotate}
+      onMouseLeave={resumeRotate}
+      onTouchStart={pauseRotate}
+      onTouchEnd={resumeRotate}
+    >
+      {/* Loading skeleton */}
+      {isLoading && !isReady && (
+        <div className="absolute inset-0 flex items-center justify-center z-10" style={{ background: 'rgba(15,32,68,0.85)' }}>
+          <div className="text-center">
+            <div className="h-10 w-10 rounded-full border-2 border-blue-300 border-t-transparent animate-spin mx-auto mb-3" />
+            <p className="text-xs text-blue-200">Đang tải panorama...</p>
+          </div>
+        </div>
+      )}
+      <div ref={containerRef} style={{ width: '100%', height: '420px' }} />
+      {/* Hint bar */}
+      <div
+        className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1.5 text-white/90 flex items-center gap-2"
+        style={{ background: 'rgba(0,0,0,0.50)', backdropFilter: 'blur(10px)', fontSize: '11px', whiteSpace: 'nowrap' }}
+      >
+        <svg className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" /></svg>
         <span>Kéo để xoay 360° • Cuộn để zoom</span>
       </div>
     </div>
