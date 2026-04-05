@@ -3,7 +3,7 @@ import {
   Landmark, Waves, Wheat, GraduationCap,
   Leaf, ShieldCheck, Truck,
   Brain, Star, PartyPopper,
-  Heart,
+  Heart, Phone,
   Menu as MenuIcon, X as XIcon, Gift,
   ChevronLeft, ChevronRight,
   TrendingUp, Handshake, Rocket, BarChart3,
@@ -28,11 +28,12 @@ const NAV_ITEMS = [
   { label: 'Liên Hệ', href: '#lien-he' },
 ]
 
-const SIDE_NAV_ITEMS: { id: string; label: string; Icon: ComponentType<LucideProps> }[] = [
-  { id: 'thanh-hoa', label: 'Thanh Hóa', Icon: Landmark },
-  { id: 'quang-ninh', label: 'Quảng Ninh', Icon: Waves },
-  { id: 'hung-yen', label: 'Hưng Yên', Icon: Wheat },
-  { id: 'dai-hoc-mo', label: 'Đại Học Mở', Icon: GraduationCap },
+const SIDE_NAV_ITEMS: { id: string; label: string; Icon: ComponentType<LucideProps>; color: string }[] = [
+  { id: 'thanh-hoa', label: 'Thanh Hóa', Icon: Landmark, color: '#dc2626' },
+  { id: 'quang-ninh', label: 'Quảng Ninh', Icon: Waves, color: '#0891b2' },
+  { id: 'hung-yen', label: 'Hưng Yên', Icon: Wheat, color: '#d97706' },
+  { id: 'dai-hoc-mo', label: 'Đại Học Mở', Icon: GraduationCap, color: '#059669' },
+  { id: 'lien-he', label: 'Liên Hệ', Icon: Phone, color: '#8b5cf6' },
 ]
 
 const PRINCESSES = [
@@ -41,21 +42,21 @@ const PRINCESSES = [
     name: 'Công chúa Đất Việt',
     province: 'Thanh Hóa',
     quote: '"Em là công chúa đất Việt - Thanh Hoá! Nơi khởi nguồn của những triều đại huy hoàng."',
-    image: 'https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=800&auto=format&fit=crop',
+    image: '/thanh-hoa.jpg',
   },
   {
     id: 'quang-ninh' as Province,
     name: 'Công chúa Biển Xanh',
     province: 'Quảng Ninh',
     quote: '"Quảng Ninh với Vịnh Hạ Long kỳ vĩ và những truyền thuyết hấp dẫn luôn khiến lòng người mê đắm."',
-    image: 'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?q=80&w=800&auto=format&fit=crop',
+    image: '/quang-ninh.png',
   },
   {
     id: 'hung-yen' as Province,
     name: 'Công chúa Đất Lúa',
     province: 'Hưng Yên',
     quote: '"Hưng Yên, Phố Hiến xưa, nơi lưu giữ những nét đẹp văn hóa độc đáo và những đặc sản trứ danh."',
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop',
+    image: '/hung-yen.jpg',
   },
 ]
 
@@ -102,10 +103,10 @@ function useSideNavVisible() {
   useEffect(() => {
     const check = () => {
       const th = document.getElementById('thanh-hoa')
-      const dm = document.getElementById('dai-hoc-mo')
-      if (!th || !dm) return
+      const footer = document.getElementById('lien-he')
+      if (!th || !footer) return
       const top = th.getBoundingClientRect().top
-      const bot = dm.getBoundingClientRect().bottom
+      const bot = footer.getBoundingClientRect().bottom
       setShow(top < window.innerHeight * 0.5 && bot > 100)
     }
     window.addEventListener('scroll', check, { passive: true })
@@ -118,10 +119,25 @@ function useSideNavVisible() {
 /* ====================================================================
    SHARED COMPONENTS
    ==================================================================== */
-function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+function Reveal({ children, className = '', delay = 0, direction = 'up' }: { children: ReactNode; className?: string; delay?: number; direction?: 'up' | 'down' | 'left' | 'right' | 'zoom' }) {
   const { ref, visible } = useScrollReveal()
+  const transforms: Record<string, string> = {
+    up: 'translateY(60px)',
+    down: 'translateY(-40px)',
+    left: 'translateX(-80px)',
+    right: 'translateX(80px)',
+    zoom: 'scale(0.85)',
+  }
   return (
-    <div ref={ref} className={`transition-all duration-700 ease-out ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        transition: `opacity 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'none' : transforms[direction],
+      }}
+    >
       {children}
     </div>
   )
@@ -190,16 +206,25 @@ function OrderModal({ open, onClose, productName, accentColor }: { open: boolean
    ==================================================================== */
 function SideNav() {
   const show = useSideNavVisible()
-  const active = useActiveSection(['thanh-hoa', 'quang-ninh', 'hung-yen', 'dai-hoc-mo'])
+  const active = useActiveSection(['thanh-hoa', 'quang-ninh', 'hung-yen', 'dai-hoc-mo', 'lien-he'])
 
   return (
     <nav className={`side-nav glass-dark ${show ? '' : 'hidden'}`}>
       {SIDE_NAV_ITEMS.map(item => {
         const isActive = active === item.id
         return (
-          <a key={item.id} href={`#${item.id}`} className={`flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-center transition cursor-pointer ${isActive ? 'bg-amber-500/20 text-amber-300' : 'text-white/60 hover:text-white/90'}`}>
-            <item.Icon className="h-5 w-5" />
-            <span className="text-[9px] font-semibold leading-tight">{item.label}</span>
+          <a key={item.id} href={`#${item.id}`} className="flex flex-col items-center gap-1.5 rounded-lg px-2 py-2 text-center cursor-pointer group">
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
+              style={{
+                background: isActive ? item.color : `${item.color}33`,
+                boxShadow: isActive ? `0 0 16px ${item.color}88` : 'none',
+                transform: isActive ? 'scale(1.15)' : 'scale(1)',
+              }}
+            >
+              <item.Icon className="h-4 w-4 text-white" />
+            </div>
+            <span className={`text-[9px] font-semibold leading-tight transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/50 group-hover:text-white/80'}`}>{item.label}</span>
           </a>
         )
       })}
@@ -213,6 +238,7 @@ function SideNav() {
 function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const active = useActiveSection(['gioi-thieu', 'thanh-hoa', 'quang-ninh', 'hung-yen', 'giao-lo-dinh-menh', 'dai-hoc-mo', 'lien-he'])
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 50)
@@ -229,9 +255,15 @@ function Header() {
         </a>
 
         <nav className="hidden items-center gap-5 lg:flex">
-          {NAV_ITEMS.map(item => (
-            <a key={item.href} href={item.href} className="text-sm font-medium text-white/80 transition hover:text-amber-300">{item.label}</a>
-          ))}
+          {NAV_ITEMS.map(item => {
+            const isActive = active === item.href.slice(1)
+            return (
+              <a key={item.href} href={item.href} className={`relative text-sm font-medium transition-colors duration-300 ${isActive ? 'text-amber-300' : 'text-white/70 hover:text-amber-300'}`}>
+                {item.label}
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-amber-400 rounded-full transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`} />
+              </a>
+            )
+          })}
         </nav>
 
         <button onClick={() => setOpen(v => !v)} className="rounded-md border border-amber-400/50 p-2 text-amber-300 lg:hidden cursor-pointer" aria-label="Menu">
@@ -242,9 +274,12 @@ function Header() {
       {open && (
         <div className="border-t border-white/10 bg-slate-900/95 px-4 py-3 lg:hidden backdrop-blur">
           <div className="grid gap-2">
-            {NAV_ITEMS.map(item => (
-              <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="rounded-md px-2 py-1.5 text-sm text-white/80 hover:bg-white/10 hover:text-amber-300">{item.label}</a>
-            ))}
+            {NAV_ITEMS.map(item => {
+              const isActive = active === item.href.slice(1)
+              return (
+                <a key={item.href} href={item.href} onClick={() => setOpen(false)} className={`rounded-md px-2 py-1.5 text-sm transition ${isActive ? 'bg-amber-500/20 text-amber-300 font-semibold' : 'text-white/80 hover:bg-white/10 hover:text-amber-300'}`}>{item.label}</a>
+              )
+            })}
           </div>
         </div>
       )}
@@ -260,29 +295,29 @@ function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video background */}
       <video autoPlay loop muted playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover z-0">
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src="/3-di-san.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-black/50 z-[1]" />
       <div className="absolute inset-0 bg-gradient-to-b from-amber-900/20 via-transparent to-black/40 z-[2]" />
 
       {/* Content */}
       <div className="relative z-[3] text-center px-4 max-w-4xl mx-auto mt-16">
-        <Reveal>
+        <Reveal direction="down">
           <h1 className="gradient-title glow-text text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight" style={{ fontFamily: "'Montserrat', sans-serif", lineHeight: '1.05' }}>
             Vọng Âm Quá Khứ
           </h1>
         </Reveal>
-        <Reveal delay={200}>
+        <Reveal delay={200} direction="left">
           <p className="mt-3 text-xl md:text-3xl lg:text-4xl font-bold text-white" style={{ textShadow: '0 0 10px rgba(245,197,66,0.6), 0 0 20px rgba(245,197,66,0.4), 0 0 40px rgba(245,197,66,0.25), 0 2px 8px rgba(0,0,0,0.35)' }}>
             Hành Trình Di Sản Của 3 Công Chúa
           </p>
         </Reveal>
-        <Reveal delay={400}>
+        <Reveal delay={400} direction="right">
           <p className="mt-5 text-lg md:text-2xl font-medium text-white/95" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.45)' }}>
             Nơi Dấu Ấn Ba Miền Thăng Hoa, Tri Thức Kiến Tạo Tương Lai
           </p>
         </Reveal>
-        <Reveal delay={600}>
+        <Reveal delay={600} direction="zoom">
           <p className="mt-4 text-sm md:text-base text-white/85 max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Cùng 3 Công Chúa dấn thân vào một hành trình khám phá những câu chuyện từ ngàn xưa, những giá trị văn hóa bất diệt và ước mơ kiến tạo tương lai
           </p>
@@ -310,7 +345,7 @@ function PrincessesSection() {
   return (
     <section id="gioi-thieu" className="bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal>
+        <Reveal direction="zoom">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-amber-600 md:text-4xl">3 Công Chúa: Lời Tự Sự Từ Trái Tim</h2>
             <p className="mx-auto mt-3 max-w-3xl text-gray-600">Mỗi công chúa là một người kể chuyện, dẫn bạn qua từng miền đất với góc nhìn riêng, giàu cảm xúc và đậm giá trị văn hóa.</p>
@@ -320,8 +355,9 @@ function PrincessesSection() {
         <div className="mt-10 grid gap-8 md:grid-cols-3">
           {PRINCESSES.map((p, i) => {
             const colors = PRINCESS_COLORS[p.id]
+            const dir = (['left', 'up', 'right'] as const)[i]
             return (
-              <Reveal key={p.id} delay={i * 200}>
+              <Reveal key={p.id} delay={i * 200} direction={dir}>
                 <article className="group text-center">
                   <div className={`mx-auto mb-4 h-36 w-36 overflow-hidden rounded-full border-4 ${colors.border} shadow-lg ${colors.shadow} transition ${colors.hoverBorder} ${colors.hoverShadow}`}>
                     <img src={p.image} alt={p.name} className="h-full w-full object-cover transition group-hover:scale-110" />
@@ -379,7 +415,7 @@ function ThanhHoaSection() {
   return (
     <section id="thanh-hoa" className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 30%, #b91c1c 50%, #c2410c 70%, #9a3412 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal>
+        <Reveal direction="left">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-amber-200 md:text-4xl">Thanh Hóa: Nơi Khởi Nguyên Của Những Triều Đại</h2>
             <p className="mt-2 text-amber-100/70">Hào Khí Ngàn Năm</p>
@@ -388,13 +424,13 @@ function ThanhHoaSection() {
 
         {/* Page 1: Horizontal Accordion (Di tích with sub-nav, Thắng cảnh, Lễ hội) */}
         {page === 0 && (
-          <Reveal>
+          <Reveal direction="zoom">
             <div className="h-accordion">
               {accItems.map((item, i) => (
                 <div key={item.title} className={`h-accordion-item ${i === accActive ? 'active' : ''}`} onClick={() => setAccActive(i)}>
                   {i === 1 && accActive === 1 && item.hasVideo ? (
                     <video autoPlay loop muted playsInline className="acc-bg" style={{ objectFit: 'cover' }}>
-                      <source src="/Vid bie sầm sơn.mov" type="video/mp4" />
+                      <source src="/vid-bie-sam-son.mov" type="video/mp4" />
                     </video>
                   ) : (
                     <img src={item.image} alt={item.title} className="acc-bg" />
@@ -475,7 +511,7 @@ function NemChuaSection() {
   return (
     <section id="nem-chua-thanh-hoa" className="py-16 md:py-24" style={{ background: 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #7f1d1d 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal>
+        <Reveal direction="right">
           {/* Same product content as the old page 2, but as a full section */}
           <div className="glass-dark rounded-2xl overflow-hidden">
             <div className="grid lg:grid-cols-2">
@@ -541,7 +577,7 @@ function QuangNinhSection() {
   return (
     <section id="quang-ninh" className="py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #7f1d1d 0%, #0c4a6e 20%, #075985 40%, #0e7490 60%, #065f46 80%, #064e3b 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal>
+        <Reveal direction="right">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-cyan-200 md:text-4xl">Quảng Ninh: Kỳ Quan Biển Đảo</h2>
             <p className="mt-2 text-cyan-100/70">Nơi hội tụ cảnh sắc thiên nhiên hùng vĩ, lịch sử chống ngoại xâm và những lễ hội biển sôi động.</p>
@@ -550,7 +586,7 @@ function QuangNinhSection() {
 
         {/* Page 1: Sea map with islands */}
         {page === 0 && (
-          <Reveal>
+          <Reveal direction="zoom">
             <div className="glass-dark rounded-2xl overflow-hidden">
               <div className="relative h-[400px] md:h-[500px]">
                 <img src="/images/ban-do-bien-qn.png" alt="Bản đồ biển Quảng Ninh" className="w-full h-full object-cover" />
@@ -578,10 +614,10 @@ function QuangNinhSection() {
 
         {/* Page 2: Di sản & Văn hóa */}
         {page === 1 && (
-          <Reveal>
+          <Reveal direction="left">
             <div className="grid gap-6 md:grid-cols-3">
               {heritage.map((h, i) => (
-                <Reveal key={h.name} delay={i * 150}>
+                <Reveal key={h.name} delay={i * 150} direction="up">
                   <article className="glass-dark rounded-2xl overflow-hidden group">
                     <div className="h-52 overflow-hidden">
                       <img src={h.image} alt={h.name} className="w-full h-full object-cover transition group-hover:scale-105" />
@@ -599,7 +635,7 @@ function QuangNinhSection() {
 
         {/* Page 3: Carnaval Hạ Long */}
         {page === 2 && (
-          <Reveal>
+          <Reveal direction="zoom">
             <div className="relative rounded-2xl overflow-hidden min-h-[500px]">
               <img src="/images/vinh-ha-long.png" alt="Vịnh Hạ Long hoàng hôn" className="absolute inset-0 w-full h-full object-cover blur-sm" />
               <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/90 via-indigo-950/50 to-purple-900/30" />
@@ -642,7 +678,7 @@ function DacSanBienSection() {
   return (
     <section id="dac-san-bien" className="py-16 md:py-24" style={{ background: 'linear-gradient(135deg, #0d9488, #0891b2)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal>
+        <Reveal direction="left">
           {/* Same chả mực product content as old page 3 */}
           <div className="rounded-2xl overflow-hidden glass-dark">
             <div className="grid lg:grid-cols-2">
@@ -690,7 +726,7 @@ function HungYenSection() {
   return (
     <section id="hung-yen" className="py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #065f46 0%, #047857 30%, #065f46 50%, #78350f 80%, #92400e 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal>
+        <Reveal direction="left">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-emerald-200 md:text-4xl">Hưng Yên: Phố Hiến Xưa, Vị Ngọt Nhãn Lồng</h2>
             <p className="mt-2 text-emerald-100/70">Nơi lưu giữ những nét đẹp văn hóa truyền thống qua hệ thống di tích, lễ hội và đặc sản nổi tiếng.</p>
@@ -699,7 +735,7 @@ function HungYenSection() {
 
         {/* Page 1: Phố Hiến */}
         {page === 0 && (
-          <Reveal>
+          <Reveal direction="right">
             <div className="relative rounded-2xl overflow-hidden min-h-[500px]">
               <img src="/images/cong-pho-hien.png" alt="Phố Hiến" className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'blur(2px) brightness(0.4)' }} />
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-900/60 to-transparent" />
@@ -731,7 +767,7 @@ function HungYenSection() {
 
         {/* Page 2: Vườn Nhãn Cổ Thụ */}
         {page === 1 && (
-          <Reveal>
+          <Reveal direction="zoom">
             <div className="relative rounded-2xl overflow-hidden min-h-[500px]">
               <img src="/images/vuon-nhan.png" alt="Vườn nhãn" className="absolute inset-0 w-full h-full object-cover" style={{ filter: 'blur(2px) brightness(0.35)' }} />
               <div className="absolute inset-0 bg-gradient-to-t from-yellow-950/80 to-amber-900/30" />
@@ -756,7 +792,7 @@ function HungYenSection() {
 
         {/* Page 3: Long Nhãn product */}
         {page === 2 && (
-          <Reveal>
+          <Reveal direction="left">
             <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #78350f, #92400e, #78350f)' }}>
               <div className="grid lg:grid-cols-2">
                 <div className="p-8 flex flex-col justify-center">
@@ -826,7 +862,7 @@ function VanMieuHeritageSection() {
         </div>
 
         {/* Title */}
-        <Reveal>
+        <Reveal direction="zoom">
           <div className="text-center mb-6">
             <p className="text-xs uppercase tracking-[0.3em] text-amber-400/80 mb-2">Essence of the Nation</p>
             <h2 className="text-3xl font-extrabold text-white md:text-5xl" style={{ textShadow: '0 0 30px rgba(212,175,55,0.3)' }}>
@@ -837,7 +873,7 @@ function VanMieuHeritageSection() {
         </Reveal>
 
         {/* Description in glass card */}
-        <Reveal delay={100}>
+        <Reveal delay={100} direction="left">
           <div className="glass-dark rounded-2xl mt-6 p-6 text-center mb-12 max-w-3xl mx-auto">
             <p className="text-sm text-white/80 leading-relaxed">
               Mang theo sự kiên cường của đất học Thanh Hóa, sức sống khoáng đạt của biển bạc Quảng Ninh, hay nét tinh tế từ phù sa Hưng Yên; định mệnh đã đưa ba tâm hồn đồng điệu gặp gỡ. Chúng mình không chỉ mang theo niềm tự hào quê hương, mà còn mang cả khát khao chinh phục những tầm cao mới, đem tri thức về xây dựng quê hương.
@@ -846,7 +882,7 @@ function VanMieuHeritageSection() {
         </Reveal>
 
         {/* 3 convergence paths SVG */}
-        <Reveal delay={150}>
+        <Reveal delay={150} direction="up">
           <div className="my-8 flex justify-center">
             <div className="relative w-full max-w-2xl h-56">
               <svg viewBox="0 0 600 220" className="w-full h-full">
@@ -868,7 +904,7 @@ function VanMieuHeritageSection() {
         </Reveal>
 
         {/* ĐH Mở - Khoa Kinh Tế header */}
-        <Reveal delay={200}>
+        <Reveal delay={200} direction="right">
           <div className="text-center mb-8">
             <p className="text-xs uppercase tracking-[0.3em] text-amber-400/60">Đại Học Mở Hà Nội — Khoa Kinh Tế</p>
             <h3 className="text-2xl font-extrabold text-amber-300 md:text-4xl mt-2" style={{ textShadow: '0 0 20px rgba(212,175,55,0.3)' }}>
@@ -878,7 +914,7 @@ function VanMieuHeritageSection() {
         </Reveal>
 
         {/* 5 Ngũ Mở floating glass cards */}
-        <Reveal delay={300}>
+        <Reveal delay={300} direction="up">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-5 md:gap-5">
             {NGU_MO.map((item, i) => (
               <div key={item.title} className="float-card glass-dark rounded-2xl p-5 text-center group hover:bg-white/10 transition-all duration-300" style={{ animationDelay: `${i * 0.3}s` }}>
@@ -933,7 +969,7 @@ function DaiHocMoSection() {
       <div className="mx-auto max-w-7xl px-4 md:px-6">
 
         {/* Title */}
-        <Reveal>
+        <Reveal direction="zoom">
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-3 mb-4">
               <img src="/images/logo-dh-mo.png" alt="Logo ĐH Mở" className="h-14 w-14 rounded-full object-contain bg-white p-1 border-2 border-amber-400/50" />
@@ -951,7 +987,7 @@ function DaiHocMoSection() {
         </Reveal>
 
         {/* Stats */}
-        <Reveal delay={100}>
+        <Reveal delay={100} direction="up">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-5 mb-12">
             {HOU_STATS.map(s => (
               <div key={s.label} className="counter-card rounded-xl p-4 text-center">
@@ -964,7 +1000,7 @@ function DaiHocMoSection() {
         </Reveal>
 
         {/* Khoa Kinh tế */}
-        <Reveal delay={200}>
+        <Reveal delay={200} direction="left">
           <div id="khoa-kinh-te" className="rounded-2xl border border-amber-200 bg-white/80 backdrop-blur shadow-lg overflow-hidden">
             <div className="p-6 md:p-8">
               <h3 className="text-xl font-extrabold text-gray-900 md:text-2xl">KHOA KINH TẾ, TRƯỜNG ĐẠI HỌC MỞ HÀ NỘI</h3>
@@ -1005,7 +1041,7 @@ function DaiHocMoSection() {
         </Reveal>
 
         {/* Cơ hội nghề nghiệp */}
-        <Reveal delay={250}>
+        <Reveal delay={250} direction="right">
           <div className="mt-8">
             <h3 className="text-xl font-bold text-amber-700 text-center mb-6" style={{ fontFamily: 'Georgia, serif' }}>
               Cơ Hội Nghề Nghiệp
@@ -1028,7 +1064,7 @@ function DaiHocMoSection() {
         </Reveal>
 
         {/* 2 ô clickable */}
-        <Reveal delay={300}>
+        <Reveal delay={300} direction="up">
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <a
               href="#lien-he"
