@@ -1230,6 +1230,29 @@ function VanMieuHeritageSection() {
             style={{ objectFit: 'cover' }}
           />
 
+          {/* HOU Logo overlay — positioned at golden ring in image (~40% from left, ~52% from top) */}
+          <div
+            className="absolute flex items-center justify-center"
+            style={{
+              left: '38%',
+              top: '42%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <div className="relative">
+              <div
+                className="rounded-full overflow-hidden border-4 shadow-2xl"
+                style={{ borderColor: '#d4af37', background: 'white', width: 'clamp(60px,8vw,140px)', height: 'clamp(60px,8vw,140px)' }}
+              >
+                <img src="/hou.png" alt="Logo ĐH Mở Hà Nội" className="w-full h-full object-contain p-1.5" />
+              </div>
+              <div
+                className="absolute inset-0 rounded-full animate-ping"
+                style={{ border: '2px solid rgba(212,175,55,0.40)', animationDuration: '2.5s' }}
+              />
+            </div>
+          </div>
+
           {/* Overlay: Title block at top */}
           <div
             className="absolute top-0 inset-x-0 flex flex-col items-center pt-4 md:pt-6"
@@ -1429,111 +1452,6 @@ function Garden360Viewer() {
   )
 }
 
-/* ====================================================================
-   CAMPUS 360 VIEWER
-   ==================================================================== */
-function Campus360Viewer() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const viewerRef = useRef<PSViewer | null>(null)
-  const [isReady, setIsReady] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const autoRotateRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !viewerRef.current) {
-          setIsLoading(true)
-          setTimeout(() => {
-            if (!containerRef.current || viewerRef.current) return
-            const viewer = new PSViewer({
-              container: containerRef.current,
-              panorama: '/images/campus-360-eq-new.jpg',
-              defaultYaw: 0,
-              defaultPitch: -0.05,
-              defaultZoomLvl: 40,
-              touchmoveTwoFingers: false,
-              mousewheelCtrlKey: false,
-              navbar: ['zoom', 'fullscreen'],
-              loadingImg: undefined,
-            })
-            viewerRef.current = viewer
-
-            viewer.addEventListener('ready', () => {
-              setIsReady(true)
-              setIsLoading(false)
-              // Auto-rotate slowly
-              autoRotateRef.current = setInterval(() => {
-                if (!viewerRef.current) return
-                const pos = viewerRef.current.getPosition()
-                viewerRef.current.rotate({ yaw: pos.yaw + 0.003, pitch: pos.pitch })
-              }, 30)
-            })
-
-            viewer.addEventListener('before-render', () => {
-              // Stop auto-rotate on user interaction
-            })
-          }, 600)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.15 }
-    )
-    observer.observe(el)
-
-    return () => {
-      observer.disconnect()
-      if (autoRotateRef.current) clearInterval(autoRotateRef.current)
-      viewerRef.current?.destroy()
-      viewerRef.current = null
-    }
-  }, [])
-
-  // Pause auto-rotate on mouse enter, resume on leave
-  const pauseRotate = () => { if (autoRotateRef.current) { clearInterval(autoRotateRef.current); autoRotateRef.current = null } }
-  const resumeRotate = () => {
-    if (autoRotateRef.current || !viewerRef.current) return
-    autoRotateRef.current = setInterval(() => {
-      if (!viewerRef.current) return
-      const pos = viewerRef.current.getPosition()
-      viewerRef.current.rotate({ yaw: pos.yaw + 0.003, pitch: pos.pitch })
-    }, 30)
-  }
-
-  return (
-    <div
-      className="relative overflow-hidden rounded-2xl shadow-2xl cursor-grab active:cursor-grabbing"
-      style={{ border: '1px solid rgba(255,255,255,0.25)' }}
-      onMouseEnter={pauseRotate}
-      onMouseLeave={resumeRotate}
-      onTouchStart={pauseRotate}
-      onTouchEnd={resumeRotate}
-    >
-      {/* Loading skeleton */}
-      {isLoading && !isReady && (
-        <div className="absolute inset-0 flex items-center justify-center z-10" style={{ background: 'rgba(15,32,68,0.85)' }}>
-          <div className="text-center">
-            <div className="h-10 w-10 rounded-full border-2 border-blue-300 border-t-transparent animate-spin mx-auto mb-3" />
-            <p className="text-xs text-blue-200">Đang tải panorama...</p>
-          </div>
-        </div>
-      )}
-      <div ref={containerRef} style={{ width: '100%', height: '420px' }} />
-      {/* Hint bar */}
-      <div
-        className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-4 py-1.5 text-white/90 flex items-center gap-2"
-        style={{ background: 'rgba(0,0,0,0.50)', backdropFilter: 'blur(10px)', fontSize: '11px', whiteSpace: 'nowrap' }}
-      >
-        <svg className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" /></svg>
-        <span>Kéo để xoay 360° • Cuộn để zoom</span>
-      </div>
-    </div>
-  )
-}
-
 function DaiHocMoSection() {
   return (
     <section
@@ -1570,16 +1488,6 @@ function DaiHocMoSection() {
             <p className="mt-4 text-sm text-white/80 font-medium tracking-wide drop-shadow">
               Nơi Tri Thức Bay Cao — Kiến Tạo Tương Lai
             </p>
-          </div>
-        </Reveal>
-
-        {/* 360 Campus Viewer */}
-        <Reveal delay={80} direction="up">
-          <div className="mb-8">
-            <p className="text-center text-xs tracking-[0.25em] uppercase mb-3 font-semibold" style={{ color: '#f0d060' }}>
-              Khám Phá Khuôn Viên 360°
-            </p>
-            <Campus360Viewer />
           </div>
         </Reveal>
 
