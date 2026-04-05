@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode, type ComponentType } from 'react'
+import { useEffect, useRef, useState, useContext, createContext, type ReactNode, type ComponentType } from 'react'
 import ChatWidget from './components/ChatWidget'
 import {
   Landmark, Waves, Wheat, GraduationCap,
@@ -9,6 +9,7 @@ import {
   ChevronLeft, ChevronRight,
   TrendingUp,
   Play, Award, Users, Trophy,
+  ShoppingCart, Plus, Minus, Trash2,
   type LucideProps,
 } from 'lucide-react'
 
@@ -16,6 +17,64 @@ import {
    TYPES
    ==================================================================== */
 type Province = 'thanh-hoa' | 'quang-ninh' | 'hung-yen'
+
+interface CartItem {
+  id: string
+  name: string
+  price: number
+  quantity: number
+  image: string
+  accentColor: string
+}
+
+interface CartContextType {
+  items: CartItem[]
+  addToCart: (item: Omit<CartItem, 'quantity'>) => void
+  removeFromCart: (id: string) => void
+  updateQty: (id: string, qty: number) => void
+  clearCart: () => void
+  totalCount: number
+  totalPrice: number
+  cartOpen: boolean
+  setCartOpen: (open: boolean) => void
+}
+
+const CartContext = createContext<CartContextType | null>(null)
+
+function useCart() {
+  const ctx = useContext(CartContext)
+  if (!ctx) throw new Error('useCart must be used inside CartProvider')
+  return ctx
+}
+
+function CartProvider({ children }: { children: ReactNode }) {
+  const [items, setItems] = useState<CartItem[]>([])
+  const [cartOpen, setCartOpen] = useState(false)
+
+  const addToCart = (item: Omit<CartItem, 'quantity'>) => {
+    setItems(prev => {
+      const existing = prev.find(i => i.id === item.id)
+      if (existing) return prev.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i)
+      return [...prev, { ...item, quantity: 1 }]
+    })
+    setCartOpen(true)
+  }
+
+  const removeFromCart = (id: string) => setItems(prev => prev.filter(i => i.id !== id))
+  const updateQty = (id: string, qty: number) => {
+    if (qty <= 0) { removeFromCart(id); return }
+    setItems(prev => prev.map(i => i.id === id ? { ...i, quantity: qty } : i))
+  }
+  const clearCart = () => setItems([])
+  const totalCount = items.reduce((s, i) => s + i.quantity, 0)
+  const totalPrice = items.reduce((s, i) => s + i.price * i.quantity, 0)
+
+  return (
+    <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQty, clearCart, totalCount, totalPrice, cartOpen, setCartOpen }}>
+      {children}
+    </CartContext.Provider>
+  )
+}
 
 /* ====================================================================
    CONSTANTS
@@ -204,6 +263,165 @@ function OrderModal({ open, onClose, productName, accentColor }: { open: boolean
 }
 
 /* ====================================================================
+   CART DRAWER
+   ==================================================================== */
+function CartDrawer() {
+  const { items, removeFromCart, updateQty, clearCart, totalPrice, cartOpen, setCartOpen } = useCart()
+  const [checkoutStep, setCheckoutStep] = useState<'cart' | 'form' | 'done'>('cart')
+  const [form, setForm] = useState({ name: '', phone: '', address: '', note: '' })
+
+  if (!cartOpen) return null
+
+  const handleSubmit = () => {
+    if (!form.name || !form.phone || !form.address) return
+    setCheckoutStep('done')
+    clearCart()
+  }
+
+  const handleClose = () => {
+    setCartOpen(false)
+    setCheckoutStep('cart')
+    setForm({ name: '', phone: '', address: '', note: '' })
+  }
+
+  const fmt = (n: number) => n.toLocaleString('vi-VN') + 'đ'
+
+  return (
+    <div className="fixed inset-0 z-[100] flex justify-end">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={handleClose} />
+
+      {/* Drawer */}
+      <div className="relative z-10 flex flex-col w-full max-w-md bg-slate-900 shadow-2xl h-full overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <ShoppingCart className="h-5 w-5 text-amber-400" />
+            <h2 className="text-lg font-bold text-white">
+              {checkoutStep === 'cart' ? 'Giỏ Hàng' : checkoutStep === 'form' ? 'Thanh Toán' : 'Đặt Hàng Thành Công'}
+            </h2>
+          </div>
+          <button onClick={handleClose} className="text-white/50 hover:text-white transition p-1">
+            <XIcon className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {checkoutStep === 'done' ? (
+            <div className="flex flex-col items-center justify-center h-full text-center px-6 py-12">
+              <PartyPopper className="h-16 w-16 text-amber-300 mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2">Cảm ơn bạn!</h3>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Đơn hàng của bạn đã được tiếp nhận. Chúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất.
+              </p>
+              <button onClick={handleClose} className="btn-shine mt-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-3 font-bold text-white">
+                Tiếp tục mua sắm
+              </button>
+            </div>
+          ) : checkoutStep === 'form' ? (
+            <div className="p-5 space-y-4">
+              <div className="rounded-xl bg-white/5 border border-white/10 p-4 mb-2">
+                {items.map(item => (
+                  <div key={item.id} className="flex justify-between items-center text-sm text-white/80 py-1">
+                    <span>{item.name} x{item.quantity}</span>
+                    <span className="text-amber-300">{fmt(item.price * item.quantity)}</span>
+                  </div>
+                ))}
+                <div className="border-t border-white/10 mt-2 pt-2 flex justify-between font-bold text-white">
+                  <span>Tổng cộng</span>
+                  <span className="text-amber-300">{fmt(totalPrice)}</span>
+                </div>
+              </div>
+              <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white placeholder:text-white/40 outline-none focus:border-amber-400/60"
+                placeholder="Họ và tên *" />
+              <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white placeholder:text-white/40 outline-none focus:border-amber-400/60"
+                placeholder="Số điện thoại *" />
+              <input value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+                className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white placeholder:text-white/40 outline-none focus:border-amber-400/60"
+                placeholder="Địa chỉ giao hàng *" />
+              <textarea value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
+                className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2.5 text-sm text-white placeholder:text-white/40 outline-none focus:border-amber-400/60 resize-none"
+                placeholder="Ghi chú (tùy chọn)" rows={3} />
+            </div>
+          ) : (
+            <div className="p-5">
+              {items.length === 0 ? (
+                <div className="text-center py-16 text-white/40">
+                  <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-30" />
+                  <p>Giỏ hàng đang trống</p>
+                  <button onClick={handleClose} className="mt-4 text-amber-400 text-sm hover:text-amber-300">Tiếp tục mua sắm</button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {items.map(item => (
+                    <div key={item.id} className="flex items-center gap-3 rounded-xl bg-white/5 border border-white/10 p-3">
+                      <img src={item.image} alt={item.name} className="h-16 w-16 rounded-lg object-cover flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-white truncate">{item.name}</p>
+                        <p className="text-amber-300 font-bold text-sm">{fmt(item.price)}</p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <button onClick={() => updateQty(item.id, item.quantity - 1)}
+                            className="h-6 w-6 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/40 transition">
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="text-white text-sm font-medium w-4 text-center">{item.quantity}</span>
+                          <button onClick={() => updateQty(item.id, item.quantity + 1)}
+                            className="h-6 w-6 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/40 transition">
+                            <Plus className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        <button onClick={() => removeFromCart(item.id)} className="text-white/30 hover:text-red-400 transition">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                        <p className="text-xs text-white/50">{fmt(item.price * item.quantity)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        {checkoutStep !== 'done' && items.length > 0 && (
+          <div className="border-t border-white/10 p-5">
+            {checkoutStep === 'cart' ? (
+              <>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-white/70 text-sm">Tổng cộng ({items.reduce((s, i) => s + i.quantity, 0)} sản phẩm)</span>
+                  <span className="text-xl font-bold text-amber-300">{fmt(totalPrice)}</span>
+                </div>
+                <button onClick={() => setCheckoutStep('form')}
+                  className="btn-shine w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 py-3.5 font-bold text-white shadow-lg transition hover:scale-[1.02]">
+                  Tiến hành thanh toán
+                </button>
+              </>
+            ) : (
+              <div className="flex gap-3">
+                <button onClick={() => setCheckoutStep('cart')}
+                  className="flex-1 rounded-xl border border-white/20 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 transition">
+                  Quay lại
+                </button>
+                <button onClick={handleSubmit} disabled={!form.name || !form.phone || !form.address}
+                  className="btn-shine flex-1 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 py-3 font-bold text-white disabled:opacity-40 transition">
+                  Xác nhận đặt hàng
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ====================================================================
    SIDE NAV (Vertical left)
    ==================================================================== */
 function SideNav() {
@@ -241,6 +459,7 @@ function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const active = useActiveSection(['gioi-thieu', 'thanh-hoa', 'quang-ninh', 'hung-yen', 'giao-lo-dinh-menh', 'dai-hoc-mo', 'lien-he'])
+  const { totalCount, setCartOpen } = useCart()
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 50)
@@ -268,9 +487,20 @@ function Header() {
           })}
         </nav>
 
-        <button onClick={() => setOpen(v => !v)} className="rounded-md border border-amber-400/50 p-2 text-amber-300 lg:hidden cursor-pointer" aria-label="Menu">
-          {open ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Cart button */}
+          <button onClick={() => setCartOpen(true)} className="relative rounded-md border border-amber-400/50 p-2 text-amber-300 hover:bg-amber-400/10 transition cursor-pointer" aria-label="Giỏ hàng">
+            <ShoppingCart className="h-5 w-5" />
+            {totalCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-red-500 text-[10px] font-bold text-white flex items-center justify-center">
+                {totalCount > 9 ? '9+' : totalCount}
+              </span>
+            )}
+          </button>
+          <button onClick={() => setOpen(v => !v)} className="rounded-md border border-amber-400/50 p-2 text-amber-300 lg:hidden cursor-pointer" aria-label="Menu">
+            {open ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -533,6 +763,7 @@ function ThanhHoaSection() {
    ==================================================================== */
 function NemChuaSection() {
   const [orderOpen, setOrderOpen] = useState(false)
+  const { addToCart } = useCart()
   return (
     <section id="nem-chua-thanh-hoa" className="py-16 md:py-24" style={{ background: 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #7f1d1d 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -560,9 +791,15 @@ function NemChuaSection() {
                 </div>
                 <p className="mt-4 text-3xl font-bold text-amber-300">50.000đ</p>
                 <p className="text-xs text-white/50">Đã có 156 người đặt mua trong tuần này</p>
-                <button onClick={() => setOrderOpen(true)} className="btn-shine mt-4 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 px-6 py-3 font-bold text-white shadow-lg">
-                  TRẢI NGHIỆM VỊ QUÊ
-                </button>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button onClick={() => addToCart({ id: 'nem-chua', name: 'Nem Chua Thanh Hóa', price: 50000, image: '/images/nem-chua.png', accentColor: '#dc2626' })}
+                    className="flex items-center gap-2 rounded-xl border-2 border-amber-400 px-5 py-3 font-bold text-amber-300 hover:bg-amber-400/10 transition">
+                    <ShoppingCart className="h-4 w-4" /> Thêm vào giỏ
+                  </button>
+                  <button onClick={() => setOrderOpen(true)} className="btn-shine rounded-xl bg-gradient-to-r from-red-600 to-orange-500 px-6 py-3 font-bold text-white shadow-lg">
+                    TRẢI NGHIỆM VỊ QUÊ
+                  </button>
+                </div>
               </div>
               {/* RIGHT: product image */}
               <div className="relative min-h-[300px] bg-gradient-to-br from-red-900/50 to-red-800/30 flex items-center justify-center p-8">
@@ -725,6 +962,7 @@ function QuangNinhSection() {
    ==================================================================== */
 function DacSanBienSection() {
   const [orderOpen, setOrderOpen] = useState(false)
+  const { addToCart } = useCart()
   return (
     <section id="dac-san-bien" className="py-16 md:py-24" style={{ background: 'linear-gradient(135deg, #0d9488, #0891b2)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -747,9 +985,15 @@ function DacSanBienSection() {
                   <p>• Khối lượng: 500g</p>
                 </div>
                 <p className="mt-4 text-3xl font-bold text-amber-300">245.000đ</p>
-                <button onClick={() => setOrderOpen(true)} className="btn-shine mt-4 rounded-xl bg-gradient-to-r from-teal-700 to-cyan-600 px-6 py-3 font-bold text-white shadow-lg w-fit">
-                  ĐẶT HÀNG NGAY
-                </button>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <button onClick={() => addToCart({ id: 'cha-muc', name: 'Chả Mực Hạ Long', price: 245000, image: '/images/cha-muc.png', accentColor: '#0d9488' })}
+                    className="flex items-center gap-2 rounded-xl border-2 border-teal-300 px-5 py-3 font-bold text-teal-200 hover:bg-teal-400/10 transition">
+                    <ShoppingCart className="h-4 w-4" /> Thêm vào giỏ
+                  </button>
+                  <button onClick={() => setOrderOpen(true)} className="btn-shine rounded-xl bg-gradient-to-r from-teal-700 to-cyan-600 px-6 py-3 font-bold text-white shadow-lg">
+                    ĐẶT HÀNG NGAY
+                  </button>
+                </div>
               </div>
               <div className="relative min-h-[300px] flex items-center justify-center p-8 bg-teal-900/30">
                 <img src="/images/cha-muc.png" alt="Chả mực Hạ Long" className="max-h-72 rounded-2xl object-contain drop-shadow-2xl" />
@@ -770,6 +1014,7 @@ function DacSanBienSection() {
 function HungYenSection() {
   const [page, setPage] = useState(0)
   const [orderOpen, setOrderOpen] = useState(false)
+  const { addToCart } = useCart()
 
   const stepLabels = ['Phố Hiến nàng thơ', 'Vườn nhãn cổ thụ', 'Long nhãn tiến vua']
 
@@ -859,9 +1104,15 @@ function HungYenSection() {
 
                   <p className="mt-4 text-3xl font-bold text-amber-300" style={{ fontFamily: 'Georgia, serif' }}>195.000đ</p>
 
-                  <button onClick={() => setOrderOpen(true)} className="btn-shine mt-4 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-500 px-6 py-3 font-bold text-white shadow-lg w-fit" style={{ fontFamily: 'Georgia, serif' }}>
-                    ĐẶT HÀNG NGAY
-                  </button>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <button onClick={() => addToCart({ id: 'long-nhan', name: 'Long Nhãn Hưng Yên', price: 195000, image: '/images/long-nhan.png', accentColor: '#b45309' })}
+                      className="flex items-center gap-2 rounded-xl border-2 border-amber-400 px-5 py-3 font-bold text-amber-300 hover:bg-amber-400/10 transition">
+                      <ShoppingCart className="h-4 w-4" /> Thêm vào giỏ
+                    </button>
+                    <button onClick={() => setOrderOpen(true)} className="btn-shine rounded-xl bg-gradient-to-r from-amber-600 to-yellow-500 px-6 py-3 font-bold text-white shadow-lg" style={{ fontFamily: 'Georgia, serif' }}>
+                      ĐẶT HÀNG NGAY
+                    </button>
+                  </div>
 
                   <div className="mt-4 glass-gold rounded-xl p-4">
                     <p className="text-sm font-bold text-amber-200 flex items-center gap-1"><Gift className="h-4 w-4" /> MUA COMBO 3 TỈNH - GIÁ ƯU ĐÃI</p>
@@ -1181,7 +1432,7 @@ function Footer() {
 /* ====================================================================
    APP
    ==================================================================== */
-export default function App() {
+function AppContent() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <Header />
@@ -1197,6 +1448,15 @@ export default function App() {
       <DaiHocMoSection />
       <Footer />
       <ChatWidget />
+      <CartDrawer />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <CartProvider>
+      <AppContent />
+    </CartProvider>
   )
 }
