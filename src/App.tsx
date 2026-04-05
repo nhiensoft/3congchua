@@ -1263,10 +1263,10 @@ function VanMieuHeritageSection() {
           <div className="absolute bottom-[5%] right-[2%]">
             <div
               className="rounded px-2 py-0.5 md:px-3 md:py-1"
-              style={{ background: 'rgba(68,64,60,0.85)', backdropFilter: 'blur(6px)' }}
+              style={{ background: 'rgba(30,58,138,0.85)', backdropFilter: 'blur(6px)' }}
             >
               <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-stone-300">Thanh Hóa</p>
-              <p className="text-[9px] md:text-xs font-extrabold text-white">Thành Nhà Hồ</p>
+              <p className="text-[9px] md:text-xs font-extrabold text-white">Lam Kinh</p>
             </div>
           </div>
 
@@ -1427,7 +1427,7 @@ function DaiHocMoSection() {
       {/* Background photo — sáng hơn */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ backgroundImage: 'url(/image.png)', backgroundSize: 'cover', backgroundPosition: 'center top', opacity: 0.55 }}
+        style={{ backgroundImage: 'url(/images/hou-campus.png)', backgroundSize: 'cover', backgroundPosition: 'center top', opacity: 0.55 }}
       />
       {/* Overlay mỏng giữ readability */}
       <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(15,35,80,0.55) 0%, rgba(20,50,110,0.45) 100%)' }} />
