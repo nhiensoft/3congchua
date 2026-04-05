@@ -418,9 +418,9 @@ function ThanhHoaSection() {
   ]
 
   const accItems = [
-    { title: 'Historical Relics: A Thousand-Year Legacy', image: diTichSlides[subSlide].image, desc: diTichSlides[subSlide].desc, hasSubNav: true },
-    { title: 'Scenic Landscapes', subtitle: 'Sầm Sơn', image: '/images/bien-sam-son.png', desc: 'Biển Sầm Sơn được bao bọc bởi núi Trường Lệ và đền Độc Cước, tạo nên cảnh quan hùng vĩ.', hasVideo: true },
-    { title: 'Festivals & Culture', image: '/images/le-hoi-poon-poong.png', desc: 'Lễ hội Pôồn Pôông - nghi lễ dân gian đặc sắc của người Mường tại Thanh Hóa, thường tổ chức vào rằm tháng Giêng hoặc tháng Bảy, cầu mùa màng bội thu và nhân khang vật thịnh.' },
+    { title: 'Di Tích Lịch Sử: Ngàn Năm Hào Khí', image: diTichSlides[subSlide].image, desc: diTichSlides[subSlide].desc, hasSubNav: true },
+    { title: 'Phong Cảnh Thiên Nhiên', subtitle: 'Sầm Sơn', image: '/images/bien-sam-son.png', desc: 'Biển Sầm Sơn được bao bọc bởi núi Trường Lệ và đền Độc Cước, tạo nên cảnh quan hùng vĩ.', hasVideo: true },
+    { title: 'Lễ Hội & Văn Hóa', image: '/images/le-hoi-poon-poong.png', desc: 'Lễ hội Pôồn Pôông - nghi lễ dân gian đặc sắc của người Mường tại Thanh Hóa, thường tổ chức vào rằm tháng Giêng hoặc tháng Bảy, cầu mùa màng bội thu và nhân khang vật thịnh.' },
   ]
 
   const stepLabels = ['Di sản văn hóa', 'Minigame']
@@ -442,10 +442,10 @@ function ThanhHoaSection() {
           </div>
         </Reveal>
 
-        {/* Page 1: Horizontal Accordion (Heritage Flow) */}
+        {/* Page 1: Horizontal Accordion (Dòng Chảy Di Sản) */}
         {page === 0 && (
           <Reveal direction="zoom">
-            <p className="text-xs uppercase tracking-[0.3em] text-amber-400/80 mb-3 font-semibold">Heritage Flow</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-amber-400/80 mb-3 font-semibold">Dòng Chảy Di Sản</p>
             <div className="h-accordion">
               {accItems.map((item, i) => (
                 <div key={item.title} className={`h-accordion-item ${i === accActive ? 'active' : ''}`} onClick={() => setAccActive(i)}>
@@ -567,7 +567,7 @@ function NemChuaSection() {
               {/* RIGHT: product image */}
               <div className="relative min-h-[300px] bg-gradient-to-br from-red-900/50 to-red-800/30 flex items-center justify-center p-8">
                 <img src="/images/nem-chua.png" alt="Nem chua Thanh Hóa" className="max-h-80 rounded-2xl object-cover shadow-2xl" />
-                <div className="product-badge">Độc quyền<br/>3 Công Chúa</div>
+                <div className="product-badge">Độc quyền<br />3 Công Chúa</div>
               </div>
             </div>
           </div>
@@ -612,42 +612,51 @@ function QuangNinhSection() {
         {/* Page 1: Sea map with islands */}
         {page === 0 && (
           <Reveal direction="zoom">
-            <div className="glass-dark rounded-2xl overflow-hidden">
+            <div className="glass-dark rounded-2xl" style={{ position: 'relative' }}>
               <div className="relative h-[400px] md:h-[500px]">
-                <img src="/images/ban-do-bien-qn.png" alt="Bản đồ biển Quảng Ninh" className="w-full h-full object-cover" />
+                <img src="/images/ban-do-bien-qn.png" alt="Bản đồ biển Quảng Ninh" className="w-full h-full object-cover rounded-2xl" />
                 {selectedIsland && (
-                  <div className="absolute inset-0 z-10" onClick={() => setSelectedIsland(null)} />
+                  <div className="absolute inset-0 z-10 rounded-2xl" onClick={() => setSelectedIsland(null)} />
                 )}
-                {islands.map(p => (
-                  <div key={p.id} className="absolute z-20" style={{ left: p.x, top: p.y, transform: 'translate(-50%, -50%)' }}>
-                    <button
-                      onClick={() => setSelectedIsland(selectedIsland === p.id ? null : p.id)}
-                      className={`rounded-full border-2 transition-all px-3 py-1.5 text-xs font-bold text-white shadow-lg ${selectedIsland === p.id ? 'border-amber-300 bg-amber-400 scale-125' : 'border-white bg-amber-500 hover:scale-110'}`}
-                    >
-                      {p.name}
-                    </button>
-                    {selectedIsland === p.id && (() => {
-                      const island = islands.find(i => i.id === selectedIsland)!
-                      return (
-                        <div
-                          className="absolute z-30 bottom-full mb-3 left-1/2 w-60 rounded-xl shadow-2xl overflow-hidden"
-                          style={{ transform: 'translateX(-50%)', background: 'rgba(7,89,133,0.97)', border: '1.5px solid rgba(125,211,252,0.4)' }}
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <button
-                            onClick={() => setSelectedIsland(null)}
-                            className="absolute top-2 right-2 text-white/60 hover:text-white text-base leading-none z-10"
-                          >✕</button>
-                          <img src={island.image} alt={island.name} className="w-full h-28 object-cover" />
-                          <div className="p-3">
-                            <h3 className="text-sm font-bold text-cyan-200">{island.name}</h3>
-                            <p className="mt-1 text-xs text-white/80 leading-relaxed">{island.text}</p>
+                {islands.map(p => {
+                  const yNum = parseFloat(p.y)
+                  const showBelow = yNum < 45
+                  return (
+                    <div key={p.id} className="absolute z-20" style={{ left: p.x, top: p.y, transform: 'translate(-50%, -50%)' }}>
+                      <button
+                        onClick={() => setSelectedIsland(selectedIsland === p.id ? null : p.id)}
+                        className={`rounded-full border-2 transition-all px-3 py-1.5 text-xs font-bold text-white shadow-lg ${selectedIsland === p.id ? 'border-amber-300 bg-amber-400 scale-125' : 'border-white bg-amber-500 hover:scale-110'}`}
+                      >
+                        {p.name}
+                      </button>
+                      {selectedIsland === p.id && (() => {
+                        const island = islands.find(i => i.id === selectedIsland)!
+                        return (
+                          <div
+                            className="absolute z-30 left-1/2 w-60 rounded-xl shadow-2xl overflow-hidden"
+                            style={{
+                              transform: 'translateX(-50%)',
+                              ...(showBelow ? { top: 'calc(100% + 12px)' } : { bottom: 'calc(100% + 12px)' }),
+                              background: 'rgba(7,89,133,0.97)',
+                              border: '1.5px solid rgba(125,211,252,0.4)',
+                            }}
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <button
+                              onClick={() => setSelectedIsland(null)}
+                              className="absolute top-2 right-2 text-white/60 hover:text-white text-base leading-none z-10"
+                            >✕</button>
+                            <img src={island.image} alt={island.name} className="w-full h-28 object-cover" />
+                            <div className="p-3">
+                              <h3 className="text-sm font-bold text-cyan-200">{island.name}</h3>
+                              <p className="mt-1 text-xs text-white/80 leading-relaxed">{island.text}</p>
+                            </div>
                           </div>
-                        </div>
-                      )
-                    })()}
-                  </div>
-                ))}
+                        )
+                      })()}
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </Reveal>
@@ -744,7 +753,7 @@ function DacSanBienSection() {
               </div>
               <div className="relative min-h-[300px] flex items-center justify-center p-8 bg-teal-900/30">
                 <img src="/images/cha-muc.png" alt="Chả mực Hạ Long" className="max-h-72 rounded-2xl object-contain drop-shadow-2xl" />
-                <div className="product-badge" style={{ background: 'linear-gradient(135deg, #ffd700, #f59e0b)' }}>Đặc sản<br/>Tuyển chọn</div>
+                <div className="product-badge" style={{ background: 'linear-gradient(135deg, #ffd700, #f59e0b)' }}>Đặc sản<br />Tuyển chọn</div>
               </div>
             </div>
           </div>
@@ -862,7 +871,7 @@ function HungYenSection() {
                 </div>
                 <div className="relative min-h-[350px] flex items-center justify-center p-8">
                   <img src="/images/long-nhan.png" alt="Long nhãn Hưng Yên" className="max-h-80 rounded-2xl object-cover shadow-2xl" />
-                  <div className="product-badge">Sản vật<br/>Tiến Vua</div>
+                  <div className="product-badge">Sản vật<br />Tiến Vua</div>
                 </div>
               </div>
             </div>
