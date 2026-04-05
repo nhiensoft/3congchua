@@ -44,11 +44,10 @@ export default function ChatWidget() {
     setLoading(true)
 
     try {
-      const res = await fetch('https://api.kie.ai/gemini-3.1-pro/v1/chat/completions', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_KIE_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gemini-3.1-pro',
