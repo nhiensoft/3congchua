@@ -671,7 +671,7 @@ function PrincessesSection() {
    THANH HÓA SECTION
    ==================================================================== */
 function ThanhHoaSection() {
-  const [page, setPage] = useState(0)
+  const { page, setPage, sectionRef: thanhHoaRef } = useScrollTabs(2)
   const [accActive, setAccActive] = useState(0)
   const [subSlide, setSubSlide] = useState(0) // sub-navigation within "Di tích lịch sử"
   const [quizIdx, setQuizIdx] = useState(0)
@@ -700,7 +700,7 @@ function ThanhHoaSection() {
   }
 
   return (
-    <section id="thanh-hoa" className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 30%, #b91c1c 50%, #c2410c 70%, #9a3412 100%)' }}>
+    <section ref={thanhHoaRef} id="thanh-hoa" className="relative py-16 md:py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #7f1d1d 0%, #991b1b 30%, #b91c1c 50%, #c2410c 70%, #9a3412 100%)' }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         <Reveal direction="left">
           <div className="text-center mb-8">
